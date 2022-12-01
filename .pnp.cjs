@@ -31,6 +31,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@chakra-ui/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.4.2"],\
             ["@emotion/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:11.10.5"],\
             ["@emotion/styled", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:11.10.5"],\
+            ["@heroicons/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.0.13"],\
             ["@types/node", "npm:18.11.9"],\
             ["@types/react", "npm:18.0.25"],\
             ["@types/react-dom", "npm:18.0.9"],\
@@ -2632,6 +2633,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@heroicons/react", [\
+        ["npm:2.0.13", {\
+          "packageLocation": "./.yarn/cache/@heroicons-react-npm-2.0.13-35b19f9179-f03c393a12.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "npm:2.0.13"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.0.13", {\
+          "packageLocation": "./.yarn/__virtual__/@heroicons-react-virtual-8a707e27c5/0/cache/@heroicons-react-npm-2.0.13-35b19f9179-f03c393a12.zip/node_modules/@heroicons/react/",\
+          "packageDependencies": [\
+            ["@heroicons/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.0.13"],\
+            ["@types/react", "npm:18.0.25"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@humanwhocodes/config-array", [\
         ["npm:0.11.7", {\
           "packageLocation": "./.yarn/cache/@humanwhocodes-config-array-npm-0.11.7-fa83ecd27f-cf506dc45d.zip/node_modules/@humanwhocodes/config-array/",\
@@ -5040,6 +5063,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@chakra-ui/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.4.2"],\
             ["@emotion/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:11.10.5"],\
             ["@emotion/styled", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:11.10.5"],\
+            ["@heroicons/react", "virtual:a43344f732cccca555bf948d5e4813dd5f638b9f3bb0a89eda1f3325400d94ff3d0af0e332dde84552506c99d4264f998437ecc0363f85adc5d5c192ab7b5f79#npm:2.0.13"],\
             ["@types/node", "npm:18.11.9"],\
             ["@types/react", "npm:18.0.25"],\
             ["@types/react-dom", "npm:18.0.9"],\
