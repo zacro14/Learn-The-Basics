@@ -1,7 +1,7 @@
 export default function Head() {
     return (
         <>
-            <title>Create Next App</title>
+            <title>Learn The Basics</title>
             <meta
                 content="width=device-width, initial-scale=1"
                 name="viewport"
