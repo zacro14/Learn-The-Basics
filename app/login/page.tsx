@@ -4,6 +4,7 @@ import {
     Button,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Grid,
     GridItem,
@@ -59,7 +60,9 @@ export default function Login() {
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <VStack pt={'10'}>
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={errors.email ? true : false}
+                                >
                                     <FormLabel fontWeight={'semibold'}>
                                         Email
                                     </FormLabel>
@@ -69,6 +72,11 @@ export default function Login() {
                                             required: true,
                                         })}
                                     />
+                                    {errors.email && (
+                                        <FormErrorMessage>
+                                            Email is required.
+                                        </FormErrorMessage>
+                                    )}
                                 </FormControl>
                                 <FormControl>
                                     <FormLabel fontWeight={'semibold'}>
@@ -80,7 +88,9 @@ export default function Login() {
                                             pr="4.5rem"
                                             type={show ? 'text' : 'password'}
                                             placeholder="Enter password"
-                                            {...register('password')}
+                                            {...register('password', {
+                                                required: true,
+                                            })}
                                         />
                                         <InputRightElement width="4.5rem">
                                             <Button
@@ -92,6 +102,11 @@ export default function Login() {
                                             </Button>
                                         </InputRightElement>
                                     </InputGroup>
+                                    {errors.password && (
+                                        <FormErrorMessage>
+                                            Password is required.
+                                        </FormErrorMessage>
+                                    )}
                                 </FormControl>
                                 <Button
                                     type="submit"

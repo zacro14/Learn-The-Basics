@@ -1,18 +1,19 @@
-'use client'
+'use client';
 
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from 'theme/theme';
 
 export default function RootLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     return (
         <html lang="en">
             <head />
             <body>
-                <ChakraProvider>{children}</ChakraProvider>
+                <ChakraProvider theme={theme}>{children}</ChakraProvider>
             </body>
         </html>
-    )
+    );
 }
