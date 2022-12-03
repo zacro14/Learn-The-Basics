@@ -2,6 +2,8 @@
 import {
     Box,
     Divider,
+    Grid,
+    GridItem,
     List,
     ListIcon,
     ListItem,
@@ -11,6 +13,7 @@ import {
     Squares2X2Icon,
     ListBulletIcon,
     Cog6ToothIcon,
+    DocumentIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import React from 'react'
@@ -31,21 +34,42 @@ export default function DashboardLayout({
             link: '/dashboard/category',
             icon: ListBulletIcon,
         },
+        {
+            name: 'Lessons',
+            link: '/dashboard/category/lessons',
+            icon: DocumentIcon,
+        },
     ]
     return (
-        <Box bgColor={'gray.100'} position="relative" display={'flex'}>
-            <Box
-                pos={'sticky'}
-                as="nav"
-                w="80"
-                bgColor={'white'}
-                boxShadow="md"
-            >
-                <VStack alignItems={'start'} p="5" mt={'20'}>
-                    <List width="full">
-                        {navigation.map(({ name, link, icon }, index) => (
+        <Box display={'flex'} bgColor={'gray.100'}>
+            <Box w="40%" bgColor={'white'} boxShadow="lg">
+                <Box pos={'sticky'} as="nav" top={'20'}>
+                    <VStack alignItems={'start'} p="5" mt={'20'}>
+                        <List width="full">
+                            {navigation.map(({ name, link, icon }, index) => (
+                                <ListItem
+                                    key={index}
+                                    rounded={'lg'}
+                                    p={'5'}
+                                    width={'full'}
+                                    cursor="pointer"
+                                    _hover={{ bgColor: 'gray.100' }}
+                                >
+                                    <ListIcon
+                                        as={icon}
+                                        color="green.500"
+                                        boxSize={'5'}
+                                        mr="4"
+                                    />
+                                    <Link href={link}>{name}</Link>
+                                </ListItem>
+                            ))}
+                        </List>
+
+                        <Divider p={'3'} />
+
+                        <List width={'full'}>
                             <ListItem
-                                key={index}
                                 rounded={'lg'}
                                 p={'5'}
                                 width={'full'}
@@ -53,37 +77,19 @@ export default function DashboardLayout({
                                 _hover={{ bgColor: 'gray.100' }}
                             >
                                 <ListIcon
-                                    as={icon}
+                                    as={Cog6ToothIcon}
                                     color="green.500"
                                     boxSize={'5'}
                                     mr="4"
-                                />
-                                <Link href={link}>{name}</Link>
+                                />{' '}
+                                Settings
                             </ListItem>
-                        ))}
-                    </List>
-                    <Divider p={'3'} />
-
-                    <List width={'full'}>
-                        <ListItem
-                            rounded={'lg'}
-                            p={'5'}
-                            width={'full'}
-                            cursor="pointer"
-                            _hover={{ bgColor: 'gray.100' }}
-                        >
-                            <ListIcon
-                                as={Cog6ToothIcon}
-                                color="green.500"
-                                boxSize={'5'}
-                                mr="4"
-                            />{' '}
-                            Settings
-                        </ListItem>
-                    </List>
-                </VStack>
+                        </List>
+                    </VStack>
+                </Box>
             </Box>
-            <Box as="section" flex={'1'}>
+
+            <Box width={'full'} as="main">
                 {children}
             </Box>
         </Box>
