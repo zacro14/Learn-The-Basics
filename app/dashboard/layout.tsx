@@ -2,8 +2,6 @@
 import {
     Box,
     Divider,
-    Grid,
-    GridItem,
     List,
     ListIcon,
     ListItem,
@@ -17,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import React from 'react'
+import DashboardHeader from '../../component/dashboard/Header'
 
 export default function DashboardLayout({
     children,
@@ -41,14 +40,39 @@ export default function DashboardLayout({
         },
     ]
     return (
-        <Box display={'flex'} bgColor={'gray.100'}>
-            <Box w="40%" bgColor={'white'} boxShadow="lg">
-                <Box pos={'sticky'} as="nav" top={'20'}>
-                    <VStack alignItems={'start'} p="5" mt={'20'}>
-                        <List width="full">
-                            {navigation.map(({ name, link, icon }, index) => (
+        <>
+            <DashboardHeader />
+            <Box display={'flex'} bgColor={'gray.100'}>
+                <Box w="80" bgColor={'white'} boxShadow="lg">
+                    <Box pos={'sticky'} as="nav" top={'16'}>
+                        <VStack alignItems={'start'} p="5">
+                            <List width="full">
+                                {navigation.map(
+                                    ({ name, link, icon }, index) => (
+                                        <ListItem
+                                            key={index}
+                                            rounded={'lg'}
+                                            p={'5'}
+                                            width={'full'}
+                                            cursor="pointer"
+                                            _hover={{ bgColor: 'gray.100' }}
+                                        >
+                                            <ListIcon
+                                                as={icon}
+                                                color="green.500"
+                                                boxSize={'5'}
+                                                mr="5"
+                                            />
+                                            <Link href={link}>{name}</Link>
+                                        </ListItem>
+                                    )
+                                )}
+                            </List>
+
+                            <Divider py={'3'} w={'full'} />
+
+                            <List width={'full'}>
                                 <ListItem
-                                    key={index}
                                     rounded={'lg'}
                                     p={'5'}
                                     width={'full'}
@@ -56,42 +80,22 @@ export default function DashboardLayout({
                                     _hover={{ bgColor: 'gray.100' }}
                                 >
                                     <ListIcon
-                                        as={icon}
+                                        as={Cog6ToothIcon}
                                         color="green.500"
                                         boxSize={'5'}
                                         mr="4"
-                                    />
-                                    <Link href={link}>{name}</Link>
+                                    />{' '}
+                                    Settings
                                 </ListItem>
-                            ))}
-                        </List>
+                            </List>
+                        </VStack>
+                    </Box>
+                </Box>
 
-                        <Divider p={'3'} />
-
-                        <List width={'full'}>
-                            <ListItem
-                                rounded={'lg'}
-                                p={'5'}
-                                width={'full'}
-                                cursor="pointer"
-                                _hover={{ bgColor: 'gray.100' }}
-                            >
-                                <ListIcon
-                                    as={Cog6ToothIcon}
-                                    color="green.500"
-                                    boxSize={'5'}
-                                    mr="4"
-                                />{' '}
-                                Settings
-                            </ListItem>
-                        </List>
-                    </VStack>
+                <Box width={'full'} as="main" pt="16">
+                    {children}
                 </Box>
             </Box>
-
-            <Box width={'full'} as="main">
-                {children}
-            </Box>
-        </Box>
+        </>
     )
 }
