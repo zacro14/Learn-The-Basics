@@ -15,10 +15,24 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+interface Inputs {
+    email: string;
+    password: string;
+}
 
 export default function Login() {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<Inputs>();
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
+    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+    console.log(watch('email'));
 
     return (
         <Box p="5" sx={{ height: '100vh' }} bgColor="gray.50">
@@ -43,38 +57,52 @@ export default function Login() {
                             <Text>where you learn the basics teachings </Text>
                         </VStack>
 
-                        <VStack pt={'10'}>
-                            <FormControl>
-                                <FormLabel fontWeight={'semibold'}>
-                                    Email
-                                </FormLabel>
-                                <Input name="email" placeholder="Enter email" />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel fontWeight={'semibold'}>
-                                    Password
-                                </FormLabel>
-                                <InputGroup size="md">
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <VStack pt={'10'}>
+                                <FormControl>
+                                    <FormLabel fontWeight={'semibold'}>
+                                        Email
+                                    </FormLabel>
                                     <Input
-                                        pr="4.5rem"
-                                        type={show ? 'text' : 'password'}
-                                        placeholder="Enter password"
+                                        placeholder="Enter email"
+                                        {...register('email', {
+                                            required: true,
+                                        })}
                                     />
-                                    <InputRightElement width="4.5rem">
-                                        <Button
-                                            h="1.75rem"
-                                            size="sm"
-                                            onClick={handleClick}
-                                        >
-                                            {show ? 'Hide' : 'Show'}
-                                        </Button>
-                                    </InputRightElement>
-                                </InputGroup>
-                            </FormControl>
-                            <Button colorScheme={'green'} width={'full'} p="6">
-                                Sign In
-                            </Button>
-                        </VStack>
+                                </FormControl>
+                                <FormControl>
+                                    <FormLabel fontWeight={'semibold'}>
+                                        Password
+                                    </FormLabel>
+                                    <InputGroup size="md">
+                                        <Input
+                                            autoComplete="current-password"
+                                            pr="4.5rem"
+                                            type={show ? 'text' : 'password'}
+                                            placeholder="Enter password"
+                                            {...register('password')}
+                                        />
+                                        <InputRightElement width="4.5rem">
+                                            <Button
+                                                h="1.75rem"
+                                                size="sm"
+                                                onClick={handleClick}
+                                            >
+                                                {show ? 'Hide' : 'Show'}
+                                            </Button>
+                                        </InputRightElement>
+                                    </InputGroup>
+                                </FormControl>
+                                <Button
+                                    type="submit"
+                                    colorScheme={'green'}
+                                    width={'full'}
+                                    p="6"
+                                >
+                                    Sign In
+                                </Button>
+                            </VStack>
+                        </form>
                     </Flex>
                 </GridItem>
             </Grid>
