@@ -1,5 +1,7 @@
 'use client';
 import {
+    Alert,
+    AlertIcon,
     Box,
     Button,
     Flex,
@@ -15,8 +17,11 @@ import {
     Text,
     VStack,
 } from '@chakra-ui/react';
+import { AxiosResponse } from 'axios';
+import { ApiClient } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import Cookie from 'js-cookie';
 
 interface Inputs {
     username: string;
@@ -24,15 +29,36 @@ interface Inputs {
 }
 
 export default function Login() {
+    const [show, setShow] = useState(false);
+    const [axiosResponse, setAxiosResponse] = useState<
+        AxiosResponse | undefined
+    >(undefined);
+
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm<Inputs>();
-    const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+    const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
+        ApiClient.post('/auth/signin', {
+            ...data,
+        })
+            .then(function (response) {
+                console.log('response', response);
+                Cookie.set('token', response.data.accessToken, {
+                    secure: true,
+                    expires: 10,
+                });
+                Cookie.set('refresh_token', response.data.refreshToken, {
+                    secure: true,
+                });
+            })
+            .catch(function (err) {
+                setAxiosResponse(err);
+            });
+    };
 
     return (
         <Box p="5" sx={{ height: '100vh' }} bgColor="gray.50">
@@ -59,6 +85,12 @@ export default function Login() {
 
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <VStack pt={'10'}>
+                                {axiosResponse?.status === 400 && (
+                                    <Alert status="error" my={'3'}>
+                                        <AlertIcon />
+                                        {axiosResponse?.data?.message}
+                                    </Alert>
+                                )}
                                 <FormControl
                                     isInvalid={errors.username ? true : false}
                                 >
@@ -66,6 +98,7 @@ export default function Login() {
                                         Username
                                     </FormLabel>
                                     <Input
+                                        autoComplete="true"
                                         placeholder="username"
                                         {...register('username', {
                                             required: true,

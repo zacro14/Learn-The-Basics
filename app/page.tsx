@@ -1,3 +1,9 @@
+import Link from 'next/link';
+
 export default function Home() {
-    return <div>hello</div>
+    return (
+        <div>
+            <Link href={'/auth/signin'}>sign in</Link>
+        </div>
+    );
 }
