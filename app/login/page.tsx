@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 interface Inputs {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -33,7 +33,6 @@ export default function Login() {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
     const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
-    console.log(watch('email'));
 
     return (
         <Box p="5" sx={{ height: '100vh' }} bgColor="gray.50">
@@ -61,20 +60,20 @@ export default function Login() {
                         <form onSubmit={handleSubmit(onSubmit)}>
                             <VStack pt={'10'}>
                                 <FormControl
-                                    isInvalid={errors.email ? true : false}
+                                    isInvalid={errors.username ? true : false}
                                 >
                                     <FormLabel fontWeight={'semibold'}>
-                                        Email
+                                        Username
                                     </FormLabel>
                                     <Input
-                                        placeholder="Enter email"
-                                        {...register('email', {
+                                        placeholder="username"
+                                        {...register('username', {
                                             required: true,
                                         })}
                                     />
-                                    {errors.email && (
+                                    {errors.username && (
                                         <FormErrorMessage>
-                                            Email is required.
+                                            username is required
                                         </FormErrorMessage>
                                     )}
                                 </FormControl>
