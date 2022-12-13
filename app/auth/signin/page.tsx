@@ -22,13 +22,14 @@ import { ApiClient } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Cookie from 'js-cookie';
-
+import { useRouter } from 'next/navigation';
 interface Inputs {
     username: string;
     password: string;
 }
 
 export default function Login() {
+    const router = useRouter();
     const [show, setShow] = useState(false);
     const [axiosResponse, setAxiosResponse] = useState<
         AxiosResponse | undefined
@@ -45,15 +46,9 @@ export default function Login() {
         ApiClient.post('/auth/signin', {
             ...data,
         })
-            .then(function (response) {
-                console.log('response', response);
-                Cookie.set('token', response.data.accessToken, {
-                    secure: true,
-                    expires: 10,
-                });
-                Cookie.set('refresh_token', response.data.refreshToken, {
-                    secure: true,
-                });
+            .then(function (response: AxiosResponse) {
+                Cookie.set('token', response.data.accessToken);
+                // router.push('/dashboard');
             })
             .catch(function (err) {
                 setAxiosResponse(err);
@@ -141,6 +136,7 @@ export default function Login() {
                                     )}
                                 </FormControl>
                                 <Button
+                                    mt={'5'}
                                     type="submit"
                                     colorScheme={'green'}
                                     width={'full'}
