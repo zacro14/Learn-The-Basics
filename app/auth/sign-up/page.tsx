@@ -6,10 +6,10 @@ import {
     Divider,
     Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Heading,
     Input,
-    InputGroup,
     Link,
     Text,
     VStack,
@@ -20,19 +20,18 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-type Signup = {
-    firstName: string;
-    lastName: string;
-    userName: string;
-    email: string;
-    password: string;
-    isAgreeTerms: boolean;
-};
+type Signup = yup.TypeOf<typeof schema>;
+// firstName: string;
+// lastName: string;
+// userName: string;
+// email: string;
+// password: string;
+// isAgreeTerms: boolean;
 
 const schema = yup.object({
     firstName: yup.string().required('Please enter your first name.'),
     lastName: yup.string().required('Please enter your lastname.'),
-    username: yup.string().required('Please enter your username.'),
+    userName: yup.string().required('Please enter your username.'),
     email: yup.string().email('Please enter an email.'),
     password: yup
         .string()
@@ -42,6 +41,7 @@ const schema = yup.object({
         .matches(/[a-z]/, 'Password requires a lowercase letter.')
         .matches(/[A-Z]/, 'Password requires an uppercase letter.')
         .matches(/[^\w]/, 'Password requires a symbol.'),
+    isAgreeTerms: yup.bool().required('required'),
 });
 export default function Signup() {
     const {
@@ -51,11 +51,14 @@ export default function Signup() {
         watch,
         formState: { errors },
     } = useForm<Signup>({ resolver: yupResolver(schema) });
-    const onSubmit: SubmitHandler<Signup> = handleSubmit((data) =>
-        console.log(data)
+
+    const onSubmitHandler: SubmitHandler<Signup> = handleSubmit(
+        (data: Signup) => console.log(data)
     );
 
-    console.log(watch('isAgreeTerms'));
+    console.log(errors.userName);
+
+    console.log(watch('userName'));
     return (
         <AuthContainer>
             <Flex flexDir={'column'} h="full">
@@ -63,15 +66,20 @@ export default function Signup() {
                     <Heading fontSize={'3xl'}>Create your account</Heading>
                 </VStack>
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmitHandler)}>
                     <VStack pt={'10'} spacing="5">
-                        <FormControl isInvalid={errors.userName && true}>
+                        <FormControl isInvalid={errors.userName ? true : false}>
                             <FormLabel>Username</FormLabel>
                             <Input
                                 autoComplete="username"
                                 placeholder="Create username"
                                 {...register('userName')}
                             />
+                            {errors.userName && (
+                                <FormErrorMessage>
+                                    {errors.userName?.message}
+                                </FormErrorMessage>
+                            )}
                         </FormControl>
                         <FormControl>
                             <FormLabel>Email</FormLabel>
@@ -105,7 +113,9 @@ export default function Signup() {
                             />
                         </FormControl>
                         <Checkbox
-                            alignItems={'start'}
+                            colorScheme={'green'}
+                            iconColor={'white'}
+                            alignItems={'center'}
                             {...register('isAgreeTerms')}
                         >
                             <Box as="span">
