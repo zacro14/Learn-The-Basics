@@ -1,6 +1,10 @@
 import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
+    fonts: {
+        heading: `'Opens Sans', sans-serif`,
+        body: `'Poppins', 'sans-serif'`,
+    },
     styles: {
         shadows: {
             outline: '0 0 0 1px #E53E3E',
