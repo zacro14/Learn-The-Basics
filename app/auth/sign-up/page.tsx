@@ -16,8 +16,9 @@ import {
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import AuthContainer from 'component/Container/Auth/Auth';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 type Signup = {
     firstName: string;
@@ -29,23 +30,32 @@ type Signup = {
 };
 
 const schema = yup.object({
-    firstName: yup.string().required(),
-    lastName: yup.string().required(),
-    username: yup.string().required(),
-    email: yup.string().email(),
+    firstName: yup.string().required('Please enter your first name.'),
+    lastName: yup.string().required('Please enter your lastname.'),
+    username: yup.string().required('Please enter your username.'),
+    email: yup.string().email('Please enter an email.'),
     password: yup
         .string()
-        .required('password is required')
-        .min(8, 'Password is to short - should be 8 chars minimum'),
+        .required('password is required.')
+        .min(8, 'Password is to short - should be 8 chars minimum.')
+        .matches(/[0-9]/, 'Password requires a number.')
+        .matches(/[a-z]/, 'Password requires a lowercase letter.')
+        .matches(/[A-Z]/, 'Password requires an uppercase letter.')
+        .matches(/[^\w]/, 'Password requires a symbol.'),
 });
 export default function Signup() {
     const {
         register,
         setValue,
         handleSubmit,
+        watch,
         formState: { errors },
-    } = useForm<Signup>();
-    const onSubmit = handleSubmit((data) => console.log(data));
+    } = useForm<Signup>({ resolver: yupResolver(schema) });
+    const onSubmit: SubmitHandler<Signup> = handleSubmit((data) =>
+        console.log(data)
+    );
+
+    console.log(watch('isAgreeTerms'));
     return (
         <AuthContainer>
             <Flex flexDir={'column'} h="full">
@@ -53,26 +63,37 @@ export default function Signup() {
                     <Heading fontSize={'3xl'}>Create your account</Heading>
                 </VStack>
 
-                <form onSubmit={onSubmit}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack pt={'10'} spacing="5">
-                        <FormControl>
+                        <FormControl isInvalid={errors.userName && true}>
                             <FormLabel>Username</FormLabel>
-                            <Input placeholder="Create username" />
+                            <Input
+                                autoComplete="username"
+                                placeholder="Create username"
+                                {...register('userName')}
+                            />
                         </FormControl>
                         <FormControl>
                             <FormLabel>Email</FormLabel>
                             <Input
                                 placeholder="jhondoe@email.com"
                                 type={'email'}
+                                {...register('email')}
                             />
                         </FormControl>
                         <FormControl>
                             <FormLabel>First Name</FormLabel>
-                            <Input placeholder="eg. Jhon" />
+                            <Input
+                                placeholder="eg. Jhon"
+                                {...register('firstName')}
+                            />
                         </FormControl>
                         <FormControl>
                             <FormLabel>Last Name</FormLabel>
-                            <Input placeholder="eg. Doe" />
+                            <Input
+                                placeholder="eg. Doe"
+                                {...register('lastName')}
+                            />
                         </FormControl>
                         <FormControl>
                             <FormLabel>Password</FormLabel>
@@ -80,9 +101,13 @@ export default function Signup() {
                                 type={'password'}
                                 autoComplete="current-password"
                                 pr="4.5rem"
+                                {...register('password')}
                             />
                         </FormControl>
-                        <Checkbox alignItems={'start'}>
+                        <Checkbox
+                            alignItems={'start'}
+                            {...register('isAgreeTerms')}
+                        >
                             <Box as="span">
                                 I agree to the Learn The Basics{' '}
                                 <Link
@@ -105,6 +130,7 @@ export default function Signup() {
                             </Box>
                         </Checkbox>
                         <Button
+                            isDisabled={!watch('isAgreeTerms')}
                             p="5"
                             type="submit"
                             colorScheme={'green'}
