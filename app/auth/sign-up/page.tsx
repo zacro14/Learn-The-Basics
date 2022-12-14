@@ -11,6 +11,8 @@ import {
     Heading,
     Icon,
     Input,
+    InputGroup,
+    InputRightElement,
     Link,
     ListItem,
     Text,
@@ -23,7 +25,12 @@ import AuthContainer from 'component/Container/Auth/Auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import {
+    InformationCircleIcon,
+    EyeIcon,
+    EyeSlashIcon,
+} from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
 
 type Signup = yup.TypeOf<typeof schema>;
 
@@ -45,22 +52,25 @@ const schema = yup.object({
         .matches(/[^\w]/, 'Password requires a symbol.'),
     isAgreeTerms: yup.bool().required('required'),
 });
+
 export default function Signup() {
+    const [show, setShowPassword] = useState(false);
     const {
+        reset,
         register,
-        setValue,
         handleSubmit,
         watch,
-        formState: { errors, isDirty, isValid },
+        formState: { errors, isSubmitSuccessful },
     } = useForm<Signup>({ resolver: yupResolver(schema) });
 
-    const onSubmitHandler: SubmitHandler<Signup> = (data) => {
-        console.log(data);
-    };
+    const onSubmitHandler: SubmitHandler<Signup> = (data) => {};
 
-    console.log(errors.userName);
+    useEffect(() => {
+        if (isSubmitSuccessful) {
+            reset();
+        }
+    }, [reset, isSubmitSuccessful]);
 
-    console.log(watch('userName'));
     return (
         <AuthContainer>
             <Flex flexDir={'column'} h="full">
@@ -162,7 +172,7 @@ export default function Signup() {
                                                 </ListItem>
                                                 <ListItem>
                                                     a special character like
-                                                    ".!@#$%^&*()+-=,".
+                                                    &quot;.!@#$%^&*()+-=&#44;&quot;.
                                                 </ListItem>
                                             </UnorderedList>
                                         </Box>
@@ -176,19 +186,40 @@ export default function Signup() {
                                     />
                                 </Tooltip>
                             </FormLabel>
-
-                            <Input
-                                type={'password'}
-                                autoComplete="current-password"
-                                placeholder="Create a password"
-                                pr="4.5rem"
-                                {...register('password')}
-                            />
-                            {errors.password && (
-                                <FormErrorMessage>
-                                    {errors.password?.message}
-                                </FormErrorMessage>
-                            )}
+                            <InputGroup>
+                                <Input
+                                    type={show ? 'text' : 'password'}
+                                    autoComplete="current-password"
+                                    placeholder="Create a password"
+                                    pr="4.5rem"
+                                    {...register('password')}
+                                />
+                                {errors.password && (
+                                    <FormErrorMessage>
+                                        {errors.password?.message}
+                                    </FormErrorMessage>
+                                )}
+                                <InputRightElement width="4.5rem">
+                                    <Button
+                                        bg={'green.300'}
+                                        h="1.75rem"
+                                        size="sm"
+                                        onClick={() => setShowPassword(!show)}
+                                    >
+                                        {show ? (
+                                            <Icon
+                                                color={'black'}
+                                                as={EyeIcon}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                color={'black'}
+                                                as={EyeSlashIcon}
+                                            />
+                                        )}
+                                    </Button>
+                                </InputRightElement>
+                            </InputGroup>
                         </FormControl>
                         <Checkbox
                             colorScheme={'green'}
