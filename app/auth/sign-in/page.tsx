@@ -15,8 +15,9 @@ import {
     VStack,
     Divider,
     Link,
+    Icon,
 } from '@chakra-ui/react';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ApiClient } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -24,17 +25,23 @@ import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 import AuthContainer from 'component/Container/Auth/Auth';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
 interface Inputs {
     username: string;
     password: string;
 }
 
+interface AxiosResponseError {
+    error: string;
+    message: string;
+    statusCode: number;
+}
+
 export default function Login() {
     const router = useRouter();
     const [show, setShow] = useState(false);
-    const [axiosResponse, setAxiosResponse] = useState<
-        AxiosResponse | undefined
-    >(undefined);
+    const [axiosError, setAxiosError] = useState<AxiosResponseError>();
 
     const {
         register,
@@ -47,12 +54,14 @@ export default function Login() {
         ApiClient.post('/auth/signin', {
             ...data,
         })
-            .then(function (response: AxiosResponse) {
+            .then(function (response) {
                 Cookie.set('token', response.data.accessToken);
                 // router.push('/dashboard');
             })
             .catch(function (err) {
-                setAxiosResponse(err);
+                if (axios.isAxiosError(err)) {
+                    setAxiosError(err.response?.data);
+                }
             });
     };
 
@@ -68,16 +77,14 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack pt={'10'}>
-                        {axiosResponse?.status === 400 && (
+                        {axiosError?.statusCode === 400 && (
                             <Alert status="error" my={'3'}>
                                 <AlertIcon />
-                                {axiosResponse?.data?.message}
+                                {axiosError.message}
                             </Alert>
                         )}
                         <FormControl isInvalid={errors.username ? true : false}>
-                            <FormLabel fontWeight={'semibold'}>
-                                Username
-                            </FormLabel>
+                            <FormLabel>Username</FormLabel>
                             <Input
                                 autoComplete="true"
                                 {...register('username', {
@@ -91,9 +98,7 @@ export default function Login() {
                             )}
                         </FormControl>
                         <FormControl>
-                            <FormLabel fontWeight={'semibold'}>
-                                Password
-                            </FormLabel>
+                            <FormLabel>Password</FormLabel>
                             <InputGroup size="md">
                                 <Input
                                     autoComplete="current-password"
@@ -105,11 +110,22 @@ export default function Login() {
                                 />
                                 <InputRightElement width="4.5rem">
                                     <Button
+                                        bg={'green.300'}
                                         h="1.75rem"
                                         size="sm"
                                         onClick={handleClick}
                                     >
-                                        {show ? 'Hide' : 'Show'}
+                                        {show ? (
+                                            <Icon
+                                                color={'black'}
+                                                as={EyeIcon}
+                                            />
+                                        ) : (
+                                            <Icon
+                                                color={'black'}
+                                                as={EyeSlashIcon}
+                                            />
+                                        )}
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
