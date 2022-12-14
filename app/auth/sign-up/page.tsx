@@ -9,6 +9,7 @@ import {
     FormErrorMessage,
     FormLabel,
     Heading,
+    HStack,
     Icon,
     Input,
     InputGroup,
@@ -18,11 +19,17 @@ import {
     Text,
     Tooltip,
     UnorderedList,
+    useRadioGroup,
     VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import AuthContainer from 'component/Container/Auth/AuthContainer';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+    SubmitHandler,
+    useController,
+    useForm,
+    Control,
+} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -31,6 +38,7 @@ import {
     EyeSlashIcon,
 } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
+import { RadioCard } from 'component/CustomRadioButton';
 
 type Signup = yup.TypeOf<typeof schema>;
 
@@ -38,13 +46,14 @@ const schema = yup.object({
     firstName: yup.string().required('Please enter your first name.'),
     lastName: yup.string().required('Please enter your lastname.'),
     userName: yup.string().required('Please enter your username.'),
+    role: yup.string().required('Please select the role'),
     email: yup
         .string()
         .required('Please enter your email.')
         .email('Please enter an email.'),
     password: yup
         .string()
-        .required('password is required.')
+        .required('Password is required.')
         .min(8, 'Password is to short - should be 8 chars minimum.')
         .matches(/[0-9]/, 'Password requires a number.')
         .matches(/[a-z]/, 'Password requires a lowercase letter.')
@@ -53,15 +62,58 @@ const schema = yup.object({
     isAgreeTerms: yup.bool().required('required'),
 });
 
+interface RadioRoleType {
+    name: string;
+    control: Control<{ role: string }>;
+    label: string;
+}
+
+// const Role = ({ label, control, name }: RadioRoleType) => {
+//     const options = ['STUDENT', 'TEACHER'];
+//     const {
+//         field,
+//         formState: { errors },
+//     } = useController({
+//         control,
+//         name,
+//         rules: { required: { value: true, message: 'Required field' } },
+//     });
+//     const { getRootProps, getRadioProps } = useRadioGroup({
+//         name,
+//         onChange: field.onChange,
+//         value: field.value,
+//     });
+//     const groups = getRootProps();
+//     return (
+//         <FormControl isInvalid={!!errors.role}>
+//             <FormLabel>{label}</FormLabel>
+//             <HStack {...groups}>
+//                 {options.map((value) => {
+//                     const radio = getRadioProps({ value });
+//                     return (
+//                         <RadioCard key={value} {...radio}>
+//                             {value}
+//                         </RadioCard>
+//                     );
+//                 })}
+//             </HStack>
+//         </FormControl>
+//     );
+// };
+
 export default function Signup() {
     const [show, setShowPassword] = useState(false);
     const {
+        control,
         reset,
         register,
         handleSubmit,
         watch,
         formState: { errors, isSubmitSuccessful },
-    } = useForm<Signup>({ resolver: yupResolver(schema) });
+    } = useForm<Signup>({
+        defaultValues: { role: 'STUDENT' },
+        resolver: yupResolver(schema),
+    });
 
     const onSubmitHandler: SubmitHandler<Signup> = (data) => {};
 
@@ -132,7 +184,7 @@ export default function Signup() {
                                 </FormErrorMessage>
                             )}
                         </FormControl>
-                        <FormControl isInvalid={errors.password ? true : false}>
+                        <FormControl isInvalid={!!errors.password}>
                             <FormLabel
                                 display={'flex'}
                                 alignItems={'center'}
@@ -194,11 +246,7 @@ export default function Signup() {
                                     pr="4.5rem"
                                     {...register('password')}
                                 />
-                                {errors.password && (
-                                    <FormErrorMessage>
-                                        {errors.password?.message}
-                                    </FormErrorMessage>
-                                )}
+
                                 <InputRightElement width="4.5rem">
                                     <Button
                                         bg={'green.300'}
@@ -220,7 +268,13 @@ export default function Signup() {
                                     </Button>
                                 </InputRightElement>
                             </InputGroup>
+                            {errors.password && (
+                                <FormErrorMessage>
+                                    {errors.password?.message}
+                                </FormErrorMessage>
+                            )}
                         </FormControl>
+
                         <Checkbox
                             colorScheme={'green'}
                             iconColor={'white'}
@@ -248,6 +302,7 @@ export default function Signup() {
                                 .
                             </Box>
                         </Checkbox>
+
                         <Button
                             isDisabled={!watch('isAgreeTerms')}
                             p="5"
