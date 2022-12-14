@@ -21,7 +21,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import AuthContainer from 'component/Container/Auth/Auth';
+import AuthContainer from 'component/Container/Auth/AuthContainer';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';

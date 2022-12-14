@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
     Box,
     Divider,
@@ -6,21 +6,21 @@ import {
     ListIcon,
     ListItem,
     VStack,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import {
     Squares2X2Icon,
     ListBulletIcon,
     Cog6ToothIcon,
     DocumentIcon,
-} from '@heroicons/react/24/outline'
-import Link from 'next/link'
-import React from 'react'
-import DashboardHeader from '../../component/dashboard/Header'
+} from '@heroicons/react/24/outline';
+import { DashboardHeader } from 'component/Header/Dashboard';
+import Link from 'next/link';
+import React from 'react';
 
 export default function DashboardLayout({
     children,
 }: {
-    children: React.ReactNode
+    children: React.ReactNode;
 }) {
     const navigation = [
         {
@@ -38,7 +38,7 @@ export default function DashboardLayout({
             link: '/dashboard/category/lessons',
             icon: DocumentIcon,
         },
-    ]
+    ];
     return (
         <>
             <DashboardHeader />
@@ -97,5 +97,5 @@ export default function DashboardLayout({
                 </Box>
             </Box>
         </>
-    )
+    );
 }

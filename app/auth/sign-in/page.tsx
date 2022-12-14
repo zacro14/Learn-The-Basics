@@ -24,7 +24,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
-import AuthContainer from 'component/Container/Auth/Auth';
+import AuthContainer from 'component/Container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 interface Inputs {
@@ -93,11 +93,11 @@ export default function Login() {
                             />
                             {errors.username && (
                                 <FormErrorMessage>
-                                    username is required
+                                    Username is required
                                 </FormErrorMessage>
                             )}
                         </FormControl>
-                        <FormControl>
+                        <FormControl isInvalid={errors.password ? true : false}>
                             <FormLabel>Password</FormLabel>
                             <InputGroup size="md">
                                 <Input

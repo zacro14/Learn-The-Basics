@@ -9,14 +9,14 @@ import {
     MenuItem,
     MenuList,
     Text,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import {
     ArrowRightOnRectangleIcon,
     UserIcon,
-} from '@heroicons/react/24/outline'
-import Link from 'next/link'
+} from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
-export default function DashboardHeader() {
+export function DashboardHeader() {
     return (
         <Box
             as="header"
@@ -51,5 +51,5 @@ export default function DashboardHeader() {
                 </MenuList>
             </Menu>
         </Box>
-    )
+    );
 }

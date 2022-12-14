@@ -1,9 +1,11 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
-import { Children, ReactNode } from 'react';
+import { AuthHeader } from 'component/Header/Auth';
+import { ReactNode } from 'react';
 
 export default function AuthContainer({ children }: { children: ReactNode }) {
     return (
-        <Box p="5" sx={{ height: '100vh' }} bgColor="gray.50">
+        <Box p="5" sx={{ minHeight: '100vh' }} bgColor="gray.50">
+            <AuthHeader />
             <Grid alignItems={'center'} justifyContent={'center'} h="full">
                 <GridItem
                     bgColor={'white'}
