@@ -84,7 +84,7 @@ export default function Login() {
                             </Alert>
                         )}
                         <FormControl isInvalid={errors.username ? true : false}>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Username or email</FormLabel>
                             <Input
                                 autoComplete="true"
                                 {...register('username', {
@@ -93,7 +93,7 @@ export default function Login() {
                             />
                             {errors.username && (
                                 <FormErrorMessage>
-                                    Username is required
+                                    Username or password is required
                                 </FormErrorMessage>
                             )}
                         </FormControl>
