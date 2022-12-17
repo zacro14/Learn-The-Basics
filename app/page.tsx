@@ -3,13 +3,13 @@ import {
     Card,
     CardBody,
     Container,
-    Stack,
     Text,
     Box,
     HStack,
     Center,
 } from '@chakra-ui/react';
-import { AppHeader } from 'component/Header/AppHeader';
+import { AppHeader } from 'component/header/AppHeader';
+import Link from 'next/link';
 
 export default function Home() {
     const Categories = [
@@ -35,7 +35,11 @@ export default function Home() {
                         >
                             <CardBody>
                                 <Center>
-                                    <Text>{name}</Text>
+                                    <Text>
+                                        <Link href={`/category/${name}`}>
+                                            {name}
+                                        </Link>
+                                    </Text>
                                 </Center>
                             </CardBody>
                         </Card>

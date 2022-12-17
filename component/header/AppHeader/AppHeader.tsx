@@ -1,5 +1,5 @@
 import { Box, Button, Flex, HStack, Link } from '@chakra-ui/react';
-import { AppLogo } from 'component/Logo';
+import { AppLogo } from 'component/logo';
 import NextLink from 'next/link';
 
 export function AppHeader() {
@@ -12,7 +12,6 @@ export function AppHeader() {
                 <HStack>
                     <NextLink passHref href={'/auth/sign-in'}>
                         <Button
-                            as={Link}
                             variant={'ghost'}
                             _hover={{
                                 textDecoration: 'none',
@@ -24,7 +23,6 @@ export function AppHeader() {
                     </NextLink>
                     <NextLink passHref href={'/auth/sign-up'}>
                         <Button
-                            as={Link}
                             colorScheme={'green'}
                             rounded={'3xl'}
                             _hover={{ textDecoration: 'none' }}

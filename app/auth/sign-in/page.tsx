@@ -18,25 +18,26 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ApiClient } from 'lib/axios/Api';
+import { ApiClientPublic } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
-import AuthContainer from 'component/Container/Auth/AuthContainer';
+import AuthContainer from 'component/container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
-interface Inputs {
+
+type Inputs = {
     username: string;
     password: string;
-}
+};
 
-interface AxiosResponseError {
+type AxiosResponseError = {
     error: string;
     message: string;
     statusCode: number;
-}
+};
 
 export default function Login() {
     const router = useRouter();
@@ -51,7 +52,7 @@ export default function Login() {
     } = useForm<Inputs>();
     const handleClick = () => setShow(!show);
     const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        ApiClient.post('/auth/signin', {
+        ApiClientPublic.post('/auth/signin', {
             ...data,
         })
             .then(function (response) {

@@ -1,5 +1,5 @@
 import { Box, Grid, GridItem } from '@chakra-ui/react';
-import { AuthHeader } from 'component/Header/Auth';
+import { AuthHeader } from 'component/header/Auth';
 import { ReactNode } from 'react';
 
 export default function AuthContainer({ children }: { children: ReactNode }) {

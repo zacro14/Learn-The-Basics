@@ -13,7 +13,7 @@ import {
     Cog6ToothIcon,
     DocumentIcon,
 } from '@heroicons/react/24/outline';
-import { DashboardHeader } from 'component/Header/Dashboard';
+import { DashboardHeader } from 'component/header/Dashboard';
 import Link from 'next/link';
 import React from 'react';
 

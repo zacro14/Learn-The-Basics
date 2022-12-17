@@ -1,5 +1,9 @@
 import axios from 'axios';
-export const ApiClient = axios.create({
-    baseURL: 'http://localhost:5003/v1/api',
+export const ApiClientPublic = axios.create({
+    baseURL: process.env.API_BASE_URL,
+});
+
+export const ApiClientPrivate = axios.create({
     withCredentials: true,
+    baseURL: process.env.API_BASE_URL,
 });

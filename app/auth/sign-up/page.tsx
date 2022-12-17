@@ -23,7 +23,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import AuthContainer from 'component/Container/Auth/AuthContainer';
+import AuthContainer from 'component/container/Auth/AuthContainer';
 import {
     SubmitHandler,
     useController,
@@ -38,7 +38,7 @@ import {
     EyeSlashIcon,
 } from '@heroicons/react/24/outline';
 import { useEffect, useState } from 'react';
-import { RadioCard } from 'component/CustomRadioButton';
+import { RadioCard } from 'component/customRadioButton';
 
 type Signup = yup.TypeOf<typeof schema>;
 

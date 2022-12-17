@@ -1,5 +1,5 @@
 import { Container, Divider, Heading, Text, VStack } from '@chakra-ui/react';
-import { AppLogo } from 'component/Logo';
+import { AppLogo } from 'component/logo';
 
 export function AuthHeader() {
     return (
