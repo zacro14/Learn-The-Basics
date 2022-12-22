@@ -8,6 +8,7 @@ import {
     HStack,
     Center,
 } from '@chakra-ui/react';
+import { LessonsCard } from 'component/card';
 import { AppHeader } from 'component/header/AppHeader';
 import Link from 'next/link';
 
@@ -23,29 +24,33 @@ export default function Home() {
     return (
         <Box bgColor={'gray.50'}>
             <AppHeader />
-            <Container p={'5'}>
+            <Box p={'5'} mx={'24'}>
                 <HStack>
                     {Categories.map(({ name }, i) => (
-                        <Card
-                            key={i}
-                            width={'24'}
-                            bg={'green.500'}
-                            color={'white'}
-                            size={'sm'}
-                        >
-                            <CardBody>
-                                <Center>
-                                    <Text>
-                                        <Link href={`/category/${name}`}>
-                                            {name}
-                                        </Link>
-                                    </Text>
-                                </Center>
-                            </CardBody>
-                        </Card>
+                        <Link key={i} href={`/category/${name}`}>
+                            <Card
+                                width={'24'}
+                                bg={'green.500'}
+                                color={'white'}
+                                size={'sm'}
+                            >
+                                <CardBody>
+                                    <Center>
+                                        <Text>{name}</Text>
+                                    </Center>
+                                </CardBody>
+                            </Card>
+                        </Link>
                     ))}
                 </HStack>
-            </Container>
+                <Box py={'5'}>
+                    <LessonsCard
+                        height={'24'}
+                        title="Math"
+                        description="Math description"
+                    />
+                </Box>
+            </Box>
         </Box>
     );
 }
