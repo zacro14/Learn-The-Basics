@@ -27,6 +27,7 @@ import NextLink from 'next/link';
 import AuthContainer from 'component/container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
+import { useAuthStore } from 'store/store';
 
 type Inputs = {
     username: string;
@@ -43,7 +44,12 @@ export default function Login() {
     const router = useRouter();
     const [show, setShow] = useState(false);
     const [axiosError, setAxiosError] = useState<AxiosResponseError>();
+    const [auth, setAuth] = useAuthStore((state) => [
+        state.auth,
+        state.setAuth,
+    ]);
 
+    console.log('user', auth);
     const {
         register,
         handleSubmit,
@@ -57,7 +63,7 @@ export default function Login() {
         })
             .then(function (response) {
                 Cookie.set('token', response.data.accessToken);
-                // router.push('/dashboard');
+                setAuth(response.data.user);
             })
             .catch(function (err) {
                 if (axios.isAxiosError(err)) {
@@ -75,6 +81,7 @@ export default function Login() {
                     </Heading>
                     <Text>where you learn the basics teachings </Text>
                 </VStack>
+                <Text>{'hello'}</Text>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack pt={'10'}>
