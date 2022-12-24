@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { DashboardHeader } from 'component/header/Dashboard';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React from 'react';
 
 export default function DashboardLayout({
@@ -22,6 +23,7 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const pathname = usePathname();
     const navigation = [
         {
             name: 'Dashboard',
@@ -35,10 +37,11 @@ export default function DashboardLayout({
         },
         {
             name: 'Lessons',
-            link: '/dashboard/category/lessons',
+            link: '/dashboard/lessons',
             icon: DocumentIcon,
         },
     ];
+
     return (
         <>
             <DashboardHeader />
@@ -46,25 +49,31 @@ export default function DashboardLayout({
                 <Box w="80" bgColor={'white'} boxShadow="lg">
                     <Box pos={'sticky'} as="nav" top={'16'}>
                         <VStack alignItems={'start'} p="5">
-                            <List width="full">
+                            <List width="full" spacing={5}>
                                 {navigation.map(
                                     ({ name, link, icon }, index) => (
-                                        <ListItem
-                                            key={index}
-                                            rounded={'lg'}
-                                            p={'5'}
-                                            width={'full'}
-                                            cursor="pointer"
-                                            _hover={{ bgColor: 'gray.100' }}
-                                        >
-                                            <ListIcon
-                                                as={icon}
-                                                color="green.500"
-                                                boxSize={'5'}
-                                                mr="5"
-                                            />
-                                            <Link href={link}>{name}</Link>
-                                        </ListItem>
+                                        <Link key={index} href={link}>
+                                            <ListItem
+                                                rounded={'lg'}
+                                                p={'5'}
+                                                width={'full'}
+                                                cursor="pointer"
+                                                bgColor={
+                                                    pathname === link
+                                                        ? 'gray.100'
+                                                        : undefined
+                                                }
+                                                _hover={{ bgColor: 'gray.100' }}
+                                            >
+                                                <ListIcon
+                                                    as={icon}
+                                                    color="green.500"
+                                                    boxSize={'5'}
+                                                    mr="5"
+                                                />
+                                                {name}
+                                            </ListItem>
+                                        </Link>
                                     )
                                 )}
                             </List>

@@ -64,6 +64,10 @@ export default function Login() {
             .then(function (response) {
                 Cookie.set('token', response.data.accessToken);
                 setAuth(response.data.user);
+                if (response.data.user.role === 'ADMIN') {
+                    return router.push('/dashboard');
+                }
+                return router.push('/');
             })
             .catch(function (err) {
                 if (axios.isAxiosError(err)) {
