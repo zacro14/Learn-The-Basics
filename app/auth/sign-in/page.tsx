@@ -48,8 +48,6 @@ export default function Login() {
         state.auth,
         state.setAuth,
     ]);
-
-    console.log('user', auth);
     const {
         register,
         handleSubmit,

@@ -5,6 +5,7 @@ import {
     Card,
     CardBody,
     CardHeader,
+    Center,
     Divider,
     Flex,
     Heading,
@@ -15,18 +16,26 @@ import {
 import AddLessonCategory from 'component/modal/AddLessonCategory';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
-import { GetCategory } from 'api/GetCategory';
+import { GetCategory } from 'api/lessoncategory/GetCategory';
 
 export default function Category() {
     const { onClose, onOpen, isOpen } = useDisclosure();
     const { data, isError, isLoading } = useQuery('category', GetCategory);
 
     if (isError) {
-        return <Heading>An Error has Occured</Heading>;
+        return (
+            <Center>
+                <Heading>An Error has Occured</Heading>
+            </Center>
+        );
     }
 
     if (isLoading) {
-        return <Heading>Loading ...</Heading>;
+        return (
+            <Center>
+                <Heading>Loading ...</Heading>
+            </Center>
+        );
     }
 
     return (
@@ -41,7 +50,7 @@ export default function Category() {
                 </Button>
             </Flex>
             <SimpleGrid my={'5'} columns={2} spacing={10}>
-                {data.map(
+                {data?.map(
                     (category: {
                         id: string;
                         name: string;
