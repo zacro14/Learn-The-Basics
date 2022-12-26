@@ -33,7 +33,11 @@ type TCategoryData = {
 
 const schema = yup.object({
     name: yup.string().required('lesson category title is required'),
-    description: yup.string().required('lesson description is required'),
+    description: yup
+        .string()
+        .required('lesson description is required')
+        .max(300, ' please only 300 max characters ')
+        .min(5, 'min  of 5 characters'),
 });
 
 export default function AddLessonCategory({
@@ -47,26 +51,30 @@ export default function AddLessonCategory({
         formState: { errors },
     } = useForm<TCategoryData>({ resolver: yupResolver(schema) });
 
-    const mutation = useMutation((categorydata: TCategoryData) => {
-        return ApiClientPrivate.post('/category/create', categorydata);
-    });
-
-    if (mutation.isError) {
-        toast({
-            title: `Error Adding Category`,
-            status: 'error',
-            isClosable: true,
-        });
-    }
-
-    if (mutation.isSuccess) {
-        toast({
-            title: `Sucessfully Added`,
-            status: 'success',
-            isClosable: true,
-        });
-        onClose();
-    }
+    const mutation = useMutation(
+        (categorydata: TCategoryData) => {
+            return ApiClientPrivate.post('/category/create', categorydata);
+        },
+        {
+            onError: (error) => {
+                toast({
+                    title: `Error `,
+                    description: `${error}`,
+                    status: 'error',
+                    isClosable: true,
+                });
+            },
+            onSuccess() {
+                toast({
+                    title: `Success`,
+                    description: 'Sucessfully added a new lesson category',
+                    status: 'success',
+                    isClosable: true,
+                });
+                onClose();
+            },
+        }
+    );
 
     const onSubmit = handleSubmit((data) => mutation.mutate(data));
 
