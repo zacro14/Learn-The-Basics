@@ -101,7 +101,12 @@ export default function DashboardLayout({
                     </Box>
                 </Box>
 
-                <Box width={'full'} as="main" pt="16">
+                <Box
+                    sx={{ minHeight: '100vh' }}
+                    width={'full'}
+                    as="main"
+                    pt="16"
+                >
                     {children}
                 </Box>
             </Box>

@@ -30,6 +30,7 @@ export function DashboardHeader() {
             alignItems="center"
             px="10"
             justifyContent={'space-between'}
+            zIndex={'2'}
         >
             <Heading>LTB</Heading>
             <Menu>

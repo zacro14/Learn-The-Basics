@@ -11,6 +11,26 @@ const theme = extendTheme({
         },
     },
     components: {
+        Textarea: {
+            variants: {
+                outline: {
+                    field: {
+                        _focus: {
+                            borderColor: 'green.500',
+                            boxShadow: '0 0 0 1px green.500',
+                        },
+                    },
+                },
+                filled: {
+                    field: {
+                        _focus: {
+                            borderColor: 'green.500',
+                            boxShadow: '0 0 0 1px green.500',
+                        },
+                    },
+                },
+            },
+        },
         Input: {
             variants: {
                 outline: {
