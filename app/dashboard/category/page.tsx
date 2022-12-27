@@ -11,12 +11,19 @@ import {
     Heading,
     Icon,
     SimpleGrid,
+    Spinner,
     useDisclosure,
 } from '@chakra-ui/react';
 import AddLessonCategory from 'component/modal/AddLessonCategory';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
+
+export type CategoryResponse = {
+    id: string;
+    name: string;
+    description: string;
+};
 
 export default function Category() {
     const { onClose, onOpen, isOpen } = useDisclosure();
@@ -32,9 +39,13 @@ export default function Category() {
 
     if (isLoading) {
         return (
-            <Center>
-                <Heading>Loading ...</Heading>
-            </Center>
+            <Flex
+                sx={{ height: '100vh' }}
+                justifyContent={'center'}
+                alignItems={'center'}
+            >
+                <Spinner color="green.500" />
+            </Flex>
         );
     }
 
@@ -50,23 +61,17 @@ export default function Category() {
                 </Button>
             </Flex>
             <SimpleGrid my={'5'} columns={2} spacing={10}>
-                {data?.map(
-                    (category: {
-                        id: string;
-                        name: string;
-                        description: string;
-                    }) => (
-                        <Card bgColor={'white'} key={category.id}>
-                            <CardHeader>
-                                <Heading size="md" textTransform={'uppercase'}>
-                                    {category.name}
-                                </Heading>
-                            </CardHeader>
-                            <Divider></Divider>
-                            <CardBody>{category.description}</CardBody>
-                        </Card>
-                    )
-                )}
+                {data?.map((category: CategoryResponse) => (
+                    <Card bgColor={'white'} key={category.id}>
+                        <CardHeader>
+                            <Heading size="md" textTransform={'uppercase'}>
+                                {category.name}
+                            </Heading>
+                        </CardHeader>
+                        <Divider></Divider>
+                        <CardBody>{category.description}</CardBody>
+                    </Card>
+                ))}
             </SimpleGrid>
 
             <AddLessonCategory isOpen={isOpen} onClose={onClose} />

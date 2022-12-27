@@ -16,6 +16,8 @@ import {
     useToast,
 } from '@chakra-ui/react';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { CategoryResponse } from 'app/dashboard/category/page';
+import { AxiosError, AxiosResponse } from 'axios';
 import { ApiClientPrivate } from 'lib/axios/Api';
 import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
@@ -53,13 +55,17 @@ export default function AddLessonCategory({
 
     const mutation = useMutation(
         (categorydata: TCategoryData) => {
-            return ApiClientPrivate.post('/category/create', categorydata);
+            return ApiClientPrivate.post<CategoryResponse>(
+                '/category/create',
+                categorydata
+            );
         },
         {
-            onError: (error) => {
+            onError: (error: AxiosError) => {
+                console.log(error);
                 toast({
                     title: `Error `,
-                    description: `${error}`,
+                    description: `${error.response?.statusText}`,
                     status: 'error',
                     isClosable: true,
                 });
