@@ -11,6 +11,7 @@ import {
 import { LessonsCard } from 'component/card';
 import { AppHeader } from 'component/header/AppHeader';
 import Link from 'next/link';
+import { GetCookie } from 'utils/cookie/cookie';
 
 export default function Home() {
     const Categories = [
@@ -21,6 +22,7 @@ export default function Home() {
             name: 'Science',
         },
     ];
+
     return (
         <Box bgColor={'gray.50'}>
             <AppHeader />
