@@ -6,7 +6,7 @@ type TCategory = {
     name: string;
     description: string;
 };
-export async function GetCategory(): Promise<TCategory[] | undefined> {
+export async function GetCategory(): Promise<TCategory[]> {
     try {
         const { data } = await ApiClientPublic.get('/category');
         return data;

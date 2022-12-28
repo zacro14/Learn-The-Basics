@@ -2,55 +2,55 @@
 import {
     Card,
     CardBody,
-    Container,
     Text,
     Box,
     HStack,
     Center,
+    Skeleton,
 } from '@chakra-ui/react';
 import { LessonsCard } from 'component/card';
 import { AppHeader } from 'component/header/AppHeader';
+import { useLessonCategory } from 'hooks/lessoncategory/useLessonCategory';
 import Link from 'next/link';
-import { GetCookie } from 'utils/cookie/cookie';
+import { CategoryResponse } from './dashboard/category/page';
 
 export default function Home() {
-    const Categories = [
-        {
-            name: 'Math',
-        },
-        {
-            name: 'Science',
-        },
-    ];
+    const { data, isError, isLoading } = useLessonCategory();
+
+    console.log(data);
 
     return (
         <Box bgColor={'gray.50'}>
             <AppHeader />
             <Box p={'5'} mx={'24'}>
                 <HStack>
-                    {Categories.map(({ name }, i) => (
-                        <Link key={i} href={`/category/${name}`}>
-                            <Card
-                                width={'24'}
-                                bg={'green.500'}
-                                color={'white'}
-                                size={'sm'}
-                            >
-                                <CardBody>
-                                    <Center>
-                                        <Text>{name}</Text>
-                                    </Center>
-                                </CardBody>
-                            </Card>
-                        </Link>
-                    ))}
+                    <Skeleton isLoaded={!isLoading}>
+                        {data?.map(({ name, id }: CategoryResponse) => (
+                            <Link key={id} href={`/category/${name}`}>
+                                <Card
+                                    width={'24'}
+                                    bg={'green.500'}
+                                    color={'white'}
+                                    size={'sm'}
+                                >
+                                    <CardBody>
+                                        <Center>
+                                            <Text>{name}</Text>
+                                        </Center>
+                                    </CardBody>
+                                </Card>
+                            </Link>
+                        ))}
+                    </Skeleton>
                 </HStack>
                 <Box py={'5'}>
-                    <LessonsCard
-                        height={'24'}
-                        title="Math"
-                        description="Math description"
-                    />
+                    <Skeleton isLoaded={true}>
+                        <LessonsCard
+                            height={'24'}
+                            title="Math"
+                            description="Math description"
+                        />
+                    </Skeleton>
                 </Box>
             </Box>
         </Box>

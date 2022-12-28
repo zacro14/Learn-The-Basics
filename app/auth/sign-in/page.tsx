@@ -21,13 +21,13 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { ApiClientPublic } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 import AuthContainer from 'component/container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { useAuthStore } from 'store/store';
+import { SetCookie } from 'utils/cookie/cookie';
 
 type Inputs = {
     username: string;
@@ -60,7 +60,7 @@ export default function Login() {
             ...data,
         })
             .then(function (response) {
-                Cookie.set('token', response.data.accessToken);
+                SetCookie('token', response.data.accessToken);
                 setAuth(response.data.user);
                 if (response.data.user.role === 'ADMIN') {
                     return router.push('/dashboard');
@@ -83,7 +83,6 @@ export default function Login() {
                     </Heading>
                     <Text>where you learn the basics teachings </Text>
                 </VStack>
-                <Text>{'hello'}</Text>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack pt={'10'}>

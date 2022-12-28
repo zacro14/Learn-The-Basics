@@ -1,5 +1,14 @@
 'use client';
-import { Box, Center, Heading } from '@chakra-ui/react';
+import {
+    Box,
+    Button,
+    Center,
+    Flex,
+    Heading,
+    HStack,
+    Stack,
+} from '@chakra-ui/react';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -20,8 +29,17 @@ export default function Error({
             alignItems={'center'}
             justifyContent={'center'}
         >
-            <Center>
+            <Center
+                sx={{ height: '100vh' }}
+                display={'flex'}
+                flexDir={'column'}
+            >
                 <Heading>Oops Something went wrong</Heading>
+                <HStack mt={'5'}>
+                    <Link href={'/'}>
+                        <Button colorScheme={'green'}>Home</Button>
+                    </Link>
+                </HStack>
             </Center>
         </Box>
     );
