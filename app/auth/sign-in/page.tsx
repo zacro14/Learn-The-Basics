@@ -61,6 +61,7 @@ export default function Login() {
         })
             .then(function (response) {
                 SetCookie('token', response.data.accessToken);
+                SetCookie('refresh_token', response.data.refreshToken);
                 setAuth(response.data.user);
                 if (response.data.user.role === 'ADMIN') {
                     return router.push('/dashboard');

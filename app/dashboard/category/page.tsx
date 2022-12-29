@@ -18,7 +18,6 @@ import AddLessonCategory from 'component/modal/AddLessonCategory';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
-import { GetCookie } from 'utils/cookie/cookie';
 
 export type CategoryResponse = {
     id: string;
