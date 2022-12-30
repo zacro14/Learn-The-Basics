@@ -48,7 +48,11 @@ export function DashboardHeader() {
                     </MenuItem>
                     <Divider />
                     <MenuItem
-                        onClick={() => signOut({ redirect: false })}
+                        onClick={() =>
+                            signOut({
+                                callbackUrl: '/auth/sign-in',
+                            })
+                        }
                         icon={
                             <Icon as={ArrowRightOnRectangleIcon} boxSize={6} />
                         }

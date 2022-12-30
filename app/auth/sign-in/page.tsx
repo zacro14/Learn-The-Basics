@@ -17,17 +17,12 @@ import {
     Link,
     Icon,
 } from '@chakra-ui/react';
-import { ApiClientPublic } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import NextLink from 'next/link';
 import AuthContainer from 'component/container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
-import { useAuthStore } from 'store/store';
-import { SetCookie } from 'utils/cookie/cookie';
-import { getSession, signIn, signOut, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 type Inputs = {
     username: string;
@@ -41,22 +36,20 @@ type AxiosResponseError = {
 };
 
 export default function Login() {
-    const router = useRouter();
     const [show, setShow] = useState(false);
     const [axiosError, setAxiosError] = useState<AxiosResponseError>();
-    const [auth, setAuth] = useAuthStore((state) => [
-        state.auth,
-        state.setAuth,
-    ]);
+
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
     } = useForm<Inputs>();
+
     const handleClick = () => setShow(!show);
     const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
         await signIn('credentials', {
+            redirect: true,
             usernameOrEmail: data.username,
             password: data.password,
             callbackUrl: '/dashboard',
