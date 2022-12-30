@@ -5,6 +5,7 @@ const nextConfig = {
     },
     env: {
         API_BASE_URL: 'http://localhost:5003/v1/api',
+        NEXTAUTH: 'http://localhost:3001',
     },
 };
 

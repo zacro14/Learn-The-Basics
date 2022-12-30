@@ -6,6 +6,7 @@ import { ChakraProvider, useToast } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { SessionProvider } from 'next-auth/react';
 
 export default function RootLayout({
     children,
@@ -15,22 +16,27 @@ export default function RootLayout({
     const toast = useToast();
     const queryClient = new QueryClient({
         queryCache: new QueryCache({
-            onError: (error) => ({
-                title: `Error `,
-                description: `${error}`,
-                status: 'error',
-                isClosable: true,
-            }),
+            onError: (error) =>
+                toast({
+                    title: `Error `,
+                    description: `${error}`,
+                    status: 'error',
+                    isClosable: true,
+                }),
         }),
     });
     return (
         <html lang="en" style={{ background: '#fafafa' }}>
             <head />
             <body>
-                <QueryClientProvider client={queryClient}>
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <ChakraProvider theme={theme}>{children}</ChakraProvider>
-                </QueryClientProvider>
+                <SessionProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools initialIsOpen={false} />
+                        <ChakraProvider theme={theme}>
+                            {children}
+                        </ChakraProvider>
+                    </QueryClientProvider>
+                </SessionProvider>
             </body>
         </html>
     );

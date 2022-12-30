@@ -17,7 +17,6 @@ import {
     Link,
     Icon,
 } from '@chakra-ui/react';
-import { AxiosError, AxiosResponse } from 'axios';
 import { ApiClientPublic } from 'lib/axios/Api';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -28,6 +27,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import { useAuthStore } from 'store/store';
 import { SetCookie } from 'utils/cookie/cookie';
+import { getSession, signIn, signOut, useSession } from 'next-auth/react';
 
 type Inputs = {
     username: string;
@@ -55,24 +55,12 @@ export default function Login() {
         formState: { errors },
     } = useForm<Inputs>();
     const handleClick = () => setShow(!show);
-    const onSubmit: SubmitHandler<Inputs> = (data: Inputs) => {
-        ApiClientPublic.post('/auth/signin', {
-            ...data,
-        })
-            .then(function (response) {
-                SetCookie('token', response.data.accessToken);
-                SetCookie('refresh_token', response.data.refreshToken);
-                setAuth(response.data.user);
-                if (response.data.user.role === 'ADMIN') {
-                    return router.push('/dashboard');
-                }
-                return router.push('/');
-            })
-            .catch(function (err) {
-                if (axios.isAxiosError(err)) {
-                    setAxiosError(err.response?.data);
-                }
-            });
+    const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
+        await signIn('credentials', {
+            usernameOrEmail: data.username,
+            password: data.password,
+            callbackUrl: '/dashboard',
+        });
     };
 
     return (

@@ -1,6 +1,7 @@
 import {
     Avatar,
     Box,
+    Button,
     Divider,
     Heading,
     Icon,
@@ -14,9 +15,11 @@ import {
     ArrowRightOnRectangleIcon,
     UserIcon,
 } from '@heroicons/react/24/outline';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export function DashboardHeader() {
+    const { data: session } = useSession();
     return (
         <Box
             as="header"
@@ -32,10 +35,12 @@ export function DashboardHeader() {
             justifyContent={'space-between'}
             zIndex={'2'}
         >
-            <Heading>LTB</Heading>
+            <Heading>
+                <Link href={'/'}>LTB</Link>
+            </Heading>
             <Menu>
                 <MenuButton>
-                    <Avatar cursor={'pointer'} name="Dan Abrahmov" />
+                    <Avatar cursor={'pointer'} name={session?.user.username} />
                 </MenuButton>
                 <MenuList>
                     <MenuItem icon={<Icon as={UserIcon} boxSize={6} />}>
@@ -43,11 +48,12 @@ export function DashboardHeader() {
                     </MenuItem>
                     <Divider />
                     <MenuItem
+                        onClick={() => signOut({ redirect: false })}
                         icon={
                             <Icon as={ArrowRightOnRectangleIcon} boxSize={6} />
                         }
                     >
-                        <Link href={'/'}>Logout</Link>
+                        Logout
                     </MenuItem>
                 </MenuList>
             </Menu>

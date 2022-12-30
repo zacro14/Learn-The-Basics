@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { useSession } from 'next-auth/react';
 import TokenService from 'service/TokenService';
 import { GetCookie } from 'utils/cookie/cookie';
 import { refreshAccessToken } from './refreshToken';
@@ -13,11 +14,12 @@ export const ApiClientPrivate = axios.create({
 });
 
 ApiClientPrivate.interceptors.request.use(
-    (config: AxiosRequestConfig) => {
+    async (config: AxiosRequestConfig) => {
         const token = TokenService.token();
-        if (typeof token !== undefined) {
-            config.headers!.Authorization = `Bearer ${token}`;
-        }
+        const { data: session } = useSession();
+
+        config.headers!.Authorization = `Bearer ${session?.user}`;
+
         return config;
     },
     (error) => Promise.reject(error)

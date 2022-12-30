@@ -63,7 +63,9 @@ export default function DashboardLayout({
                                                         ? 'gray.100'
                                                         : undefined
                                                 }
-                                                _hover={{ bgColor: 'gray.100' }}
+                                                _hover={{
+                                                    bgColor: 'gray.100',
+                                                }}
                                             >
                                                 <ListIcon
                                                     as={icon}
