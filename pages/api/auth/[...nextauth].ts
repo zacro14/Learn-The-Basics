@@ -55,10 +55,15 @@ const providers = [
 ];
 
 const callbacks = {
+    async signIn() {
+        const isAllowedToSignIn = true;
+        if (isAllowedToSignIn) {
+            return true;
+        } else {
+            return '/auth/sign-in';
+        }
+    },
     async jwt({ token, user }: any) {
-        console.log('user => ', user);
-        console.log('token', token);
-
         if (user) {
             token.access_token = user.accessToken;
             token.refresh_token = user.refreshToken;
@@ -78,7 +83,12 @@ const callbacks = {
     },
 };
 
+const pages = {
+    error: '/auth/sign-in',
+};
+
 const Options = {
+    pages,
     providers,
     callbacks,
 };
