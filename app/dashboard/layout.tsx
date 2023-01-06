@@ -1,10 +1,12 @@
 'use client';
 import {
     Box,
+    Center,
     Divider,
     List,
     ListIcon,
     ListItem,
+    Spinner,
     VStack,
 } from '@chakra-ui/react';
 import {
@@ -14,8 +16,9 @@ import {
     DocumentIcon,
 } from '@heroicons/react/24/outline';
 import { DashboardHeader } from 'component/header/Dashboard';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter, notFound } from 'next/navigation';
 import React from 'react';
 
 export default function DashboardLayout({
@@ -23,7 +26,9 @@ export default function DashboardLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const { data: session, status } = useSession();
     const pathname = usePathname();
+    const router = useRouter();
     const navigation = [
         {
             name: 'Dashboard',
@@ -41,6 +46,19 @@ export default function DashboardLayout({
             icon: DocumentIcon,
         },
     ];
+    if (status === 'loading') {
+        return (
+            <Box sx={{ minHeight: '100vh' }} width={'full'} as="main" pt="16">
+                <Center>
+                    <Spinner color="green.500" />
+                </Center>
+            </Box>
+        );
+    }
+
+    if (status === 'unauthenticated') {
+        return router.push('/');
+    }
 
     return (
         <>

@@ -2,11 +2,12 @@
 
 import '@fontsource/poppins';
 import '@fontsource/open-sans';
-import { ChakraProvider, useToast } from '@chakra-ui/react';
+import { Center, ChakraProvider, Spinner, useToast } from '@chakra-ui/react';
 import theme from 'theme/theme';
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
+import React from 'react';
 
 export default function RootLayout({
     children,
@@ -40,4 +41,18 @@ export default function RootLayout({
             </body>
         </html>
     );
+}
+
+function Auth(children: React.ReactNode) {
+    const { status } = useSession();
+
+    if (status === 'loading') {
+        return (
+            <Center>
+                <Spinner color="green.500" />
+            </Center>
+        );
+    }
+
+    return children;
 }
