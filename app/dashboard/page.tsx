@@ -8,3 +8,8 @@ export default function Dashboard() {
         </Box>
     );
 }
+
+Dashboard.auth = {
+    role: 'TEACHER',
+    unauthorized: '/',
+};

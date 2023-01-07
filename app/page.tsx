@@ -16,9 +16,6 @@ import { CategoryResponse } from './dashboard/category/page';
 
 export default function Home() {
     const { data, isError, isLoading } = useLessonCategory();
-
-    console.log(data);
-
     return (
         <Box bgColor={'gray.50'}>
             <AppHeader />

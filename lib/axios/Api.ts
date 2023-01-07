@@ -1,8 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { useSession } from 'next-auth/react';
-import TokenService from 'service/TokenService';
-import { GetCookie } from 'utils/cookie/cookie';
+import { useToken } from 'hooks/token/useToken';
 import { refreshAccessToken } from './refreshToken';
+
 export const ApiClientPublic = axios.create({
     baseURL: process.env.API_BASE_URL,
 });
@@ -15,11 +14,8 @@ export const ApiClientPrivate = axios.create({
 
 ApiClientPrivate.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
-        const token = TokenService.token();
-        const { data: session } = useSession();
-
-        config.headers!.Authorization = `Bearer ${session?.user}`;
-
+        const token = useToken();
+        config.headers!.Authorization = `Bearer ${token?.access_token}`;
         return config;
     },
     (error) => Promise.reject(error)
@@ -31,18 +27,23 @@ ApiClientPrivate.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
+        console.log('error', error);
+        const token = useToken();
+        console.log('token', token);
 
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const refreshToken = GetCookie('refresh_token');
-            if (refreshToken) {
-                return refreshAccessToken(refreshToken).then((accesToken) => {
-                    originalRequest.headers[
-                        'Authorization'
-                    ] = `Bearer ${accesToken}`;
 
-                    return ApiClientPrivate(originalRequest);
-                });
+            if (token?.refresh_token) {
+                return refreshAccessToken(token.refresh_token).then(
+                    (accesToken) => {
+                        originalRequest.headers[
+                            'Authorization'
+                        ] = `Bearer ${accesToken}`;
+
+                        return ApiClientPrivate(originalRequest);
+                    }
+                );
             }
         }
     }

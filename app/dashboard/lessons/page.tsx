@@ -1,15 +1,11 @@
 'use client';
-import { Box } from '@chakra-ui/react';
-import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { Container, Heading } from '@chakra-ui/react';
+import { Editor } from 'component/editor';
 export default function Lessons() {
-    const editor = useEditor({
-        extensions: [StarterKit],
-        content: '<p>Hello World! 🌎️</p>',
-    });
     return (
-        <Box p={'5'}>
-            <EditorContent editor={editor}></EditorContent>
-        </Box>
+        <Container p={'5'}>
+            <Heading my={'5'}>Create Lessons</Heading>
+            <Editor />
+        </Container>
     );
 }

@@ -15,11 +15,23 @@ import {
     ArrowRightOnRectangleIcon,
     UserIcon,
 } from '@heroicons/react/24/outline';
+import { ApiClientPrivate } from 'lib/axios/Api';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 
 export function DashboardHeader() {
     const { data: session } = useSession();
+
+    const handleSignout = async () => {
+        const { status } = await ApiClientPrivate.get('/auth/logout');
+        if (status === 200) {
+            return signOut({
+                callbackUrl: '/auth/sign-in',
+            });
+        }
+
+        return;
+    };
     return (
         <Box
             as="header"
@@ -48,11 +60,7 @@ export function DashboardHeader() {
                     </MenuItem>
                     <Divider />
                     <MenuItem
-                        onClick={() =>
-                            signOut({
-                                callbackUrl: '/auth/sign-in',
-                            })
-                        }
+                        onClick={handleSignout}
                         icon={
                             <Icon as={ArrowRightOnRectangleIcon} boxSize={6} />
                         }
