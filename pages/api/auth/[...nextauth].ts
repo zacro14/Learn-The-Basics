@@ -1,13 +1,14 @@
 import { ApiClientPublic } from 'lib/axios/Api';
 import { refreshAccessToken } from 'lib/axios/refreshToken';
-import { JWT } from 'next-auth/jwt';
 import NextAuth from 'next-auth/next';
 import CredentialProvider from 'next-auth/providers/credentials';
 
 type AuthUser = {
-    accessToken: string;
-    refreshToken: string;
     user: {
+        token: {
+            accessToken: string;
+            refreshToken: string;
+        };
         id: string;
         username: string;
         role: string;
@@ -40,12 +41,9 @@ const providers = [
                 username: credentials.usernameOrEmail,
                 password: credentials.password,
             };
-            const { data } = await ApiClientPublic.post<AuthUser>(
-                '/auth/signin',
-                {
-                    ...payload,
-                }
-            );
+            const { data } = await ApiClientPublic.post('/auth/signin', {
+                ...payload,
+            });
             if (data) {
                 return data;
             }
@@ -65,8 +63,11 @@ const callbacks = {
     },
     async jwt({ token, user }: any) {
         if (user) {
-            token.access_token = user.accessToken;
-            token.refresh_token = user.refreshToken;
+            token.token = {
+                access_token: user.accessToken,
+                refresh_token: user.refreshToken,
+            };
+
             token.user = user.user;
         }
 
@@ -74,11 +75,15 @@ const callbacks = {
     },
 
     async session({ session, token }: any) {
-        session.token = {
-            refresh_token: token.refresh_token,
-            access_token: token.access_token,
+        console.log('token =>', token);
+        console.log('session', session);
+        session.user = {
+            token: {
+                refresh_token: token.token.refresh_token,
+                access_token: token.token.access_token,
+            },
+            ...token.user,
         };
-        session.user = token.user;
         return session;
     },
 };

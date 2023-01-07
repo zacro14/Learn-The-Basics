@@ -1,6 +1,18 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useToken } from 'hooks/token/useToken';
 import { refreshAccessToken } from './refreshToken';
+import { getSession } from 'next-auth/react';
+
+type Token = {
+    access_token: string;
+    refresh_token: string;
+};
+async function getToken(): Promise<Token | null> {
+    const session = await getSession();
+
+    console.log('session', session);
+    return session ? session.user.token : null;
+}
 
 export const ApiClientPublic = axios.create({
     baseURL: process.env.API_BASE_URL,
@@ -14,7 +26,7 @@ export const ApiClientPrivate = axios.create({
 
 ApiClientPrivate.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
-        const token = useToken();
+        const token = await getToken();
         config.headers!.Authorization = `Bearer ${token?.access_token}`;
         return config;
     },
@@ -26,15 +38,14 @@ ApiClientPrivate.interceptors.response.use(
         return response;
     },
     async (error) => {
+        const token = await getToken();
         const originalRequest = error.config;
         console.log('error', error);
-        const token = useToken();
-        console.log('token', token);
+        console.log('token', token?.access_token);
 
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-
-            if (token?.refresh_token) {
+            if (token) {
                 return refreshAccessToken(token.refresh_token).then(
                     (accesToken) => {
                         originalRequest.headers[
