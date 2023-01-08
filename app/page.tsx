@@ -21,9 +21,9 @@ export default function Home() {
             <AppHeader />
             <Box p={'5'} mx={'24'}>
                 <HStack>
-                    <Skeleton isLoaded={!isLoading}>
-                        {data?.map(({ name, id }: CategoryResponse) => (
-                            <Link key={id} href={`/category/${name}`}>
+                    {data?.map(({ name, id }: CategoryResponse) => (
+                        <Skeleton key={id} isLoaded={!isLoading}>
+                            <Link href={`/category/${name}`}>
                                 <Card
                                     width={'24'}
                                     bg={'green.500'}
@@ -37,8 +37,8 @@ export default function Home() {
                                     </CardBody>
                                 </Card>
                             </Link>
-                        ))}
-                    </Skeleton>
+                        </Skeleton>
+                    ))}
                 </HStack>
                 <Box py={'5'}>
                     <Skeleton isLoaded={true}>

@@ -16,44 +16,51 @@ import {
     Divider,
     Link,
     Icon,
+    Toast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import NextLink from 'next/link';
 import AuthContainer from 'component/container/Auth/AuthContainer';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import { signIn } from 'next-auth/react';
+import { signIn, SignInResponse } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 type Inputs = {
     username: string;
     password: string;
 };
 
-type AxiosResponseError = {
-    error: string;
-    message: string;
-    statusCode: number;
-};
-
 export default function Login() {
     const [show, setShow] = useState(false);
-    const [axiosError, setAxiosError] = useState<AxiosResponseError>();
+    const [signInError, setSigninError] = useState<boolean>(false);
+    const router = useRouter();
 
     const {
         register,
         handleSubmit,
+        reset,
         watch,
         formState: { errors },
     } = useForm<Inputs>();
 
     const handleClick = () => setShow(!show);
     const onSubmit: SubmitHandler<Inputs> = async (data: Inputs) => {
-        await signIn('credentials', {
-            redirect: true,
-            usernameOrEmail: data.username,
-            password: data.password,
-            callbackUrl: '/dashboard',
-        });
+        const signInStatus: SignInResponse | undefined = await signIn(
+            'credentials',
+            {
+                redirect: false,
+                usernameOrEmail: data.username,
+                password: data.password,
+            }
+        );
+
+        if (!signInStatus?.ok) {
+            return setSigninError(true);
+        }
+
+        reset();
+        return router.push('/dashboard');
     };
 
     return (
@@ -68,10 +75,10 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <VStack pt={'10'}>
-                        {axiosError?.statusCode === 400 && (
+                        {signInError && (
                             <Alert status="error" my={'3'}>
                                 <AlertIcon />
-                                {axiosError.message}
+                                {'Invalid username or password'}
                             </Alert>
                         )}
                         <FormControl isInvalid={errors.username ? true : false}>

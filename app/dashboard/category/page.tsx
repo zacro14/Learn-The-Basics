@@ -15,7 +15,7 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import AddLessonCategory from 'component/modal/AddLessonCategory';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
 
@@ -64,9 +64,19 @@ export default function Category() {
                 {data?.map((category: CategoryResponse) => (
                     <Card bgColor={'white'} key={category.id}>
                         <CardHeader>
-                            <Heading size="md" textTransform={'uppercase'}>
-                                {category.name}
-                            </Heading>
+                            <Flex
+                                alignItems={'center'}
+                                justifyContent={'space-between'}
+                            >
+                                <Heading size="md" textTransform={'uppercase'}>
+                                    {category.name}
+                                </Heading>
+                                <Icon
+                                    as={EllipsisVerticalIcon}
+                                    boxSize={'5'}
+                                    color={'gray.700'}
+                                />
+                            </Flex>
                         </CardHeader>
                         <Divider></Divider>
                         <CardBody>{category.description}</CardBody>

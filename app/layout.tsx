@@ -32,6 +32,7 @@ export default function RootLayout({
             <body>
                 <SessionProvider>
                     <QueryClientProvider client={queryClient}>
+                        <ReactQueryDevtools />
                         <ChakraProvider theme={theme}>
                             {children}
                         </ChakraProvider>

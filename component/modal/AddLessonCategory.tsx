@@ -20,7 +20,7 @@ import { CategoryResponse } from 'app/dashboard/category/page';
 import { AxiosError, AxiosResponse } from 'axios';
 import { ApiClientPrivate } from 'lib/axios/Api';
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
 
 type TAddLessonProps = {
@@ -47,6 +47,8 @@ export default function AddLessonCategory({
     onClose,
 }: TAddLessonProps) {
     const toast = useToast();
+    const query = useQueryClient();
+
     const {
         register,
         handleSubmit,
@@ -62,7 +64,6 @@ export default function AddLessonCategory({
         },
         {
             onError: (error: AxiosError) => {
-                console.log(error);
                 toast({
                     title: `Error `,
                     description: `${error.response?.statusText}`,
@@ -71,6 +72,7 @@ export default function AddLessonCategory({
                 });
             },
             onSuccess() {
+                query.invalidateQueries('category');
                 toast({
                     title: `Success`,
                     description: 'Sucessfully added a new lesson category',

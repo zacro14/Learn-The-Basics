@@ -75,8 +75,6 @@ const callbacks = {
     },
 
     async session({ session, token }: any) {
-        console.log('token =>', token);
-        console.log('session', session);
         session.user = {
             token: {
                 refresh_token: token.token.refresh_token,
