@@ -1,5 +1,4 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { useToken } from 'hooks/token/useToken';
 import { refreshAccessToken } from './refreshToken';
 import { getSession } from 'next-auth/react';
 
@@ -9,8 +8,6 @@ type Token = {
 };
 async function getToken(): Promise<Token | null> {
     const session = await getSession();
-
-    console.log('session', session);
     return session ? session.user.token : null;
 }
 
@@ -40,9 +37,6 @@ ApiClientPrivate.interceptors.response.use(
     async (error) => {
         const token = await getToken();
         const originalRequest = error.config;
-        console.log('error', error);
-        console.log('token', token?.access_token);
-
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             if (token) {
