@@ -29,6 +29,7 @@ import {
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
+import { useState } from 'react';
 
 export type CategoryResponse = {
     id: string;
@@ -39,41 +40,49 @@ export type CategoryResponse = {
 function CardMenu() {
     return (
         <Menu>
-            <MenuButton
-                opacity={'0'}
-                _groupHover={{
-                    opacity: '1',
-                }}
-                as={IconButton}
-                aria-label="Options"
-                icon={
-                    <CustomIcon
-                        icon={EllipsisVerticalIcon}
-                        color={'gray.700'}
+            {({ isOpen }) => (
+                <>
+                    <MenuButton
+                        opacity={isOpen ? '1' : '0' || '0'}
+                        _groupHover={{
+                            opacity: `${(isOpen && '1') || '1'}`,
+                        }}
+                        as={IconButton}
+                        aria-label="Options"
+                        icon={
+                            <CustomIcon
+                                icon={EllipsisVerticalIcon}
+                                color={'gray.700'}
+                            />
+                        }
+                        variant="outline"
                     />
-                }
-                variant="outline"
-            />
-            <MenuList>
-                <MenuItem
-                    icon={
-                        <Icon
-                            as={PencilSquareIcon}
-                            boxSize={'5'}
-                            color={'gray.700'}
-                        />
-                    }
-                >
-                    Edit
-                </MenuItem>
-                <MenuItem
-                    icon={
-                        <Icon as={TrashIcon} boxSize={'5'} color={'gray.700'} />
-                    }
-                >
-                    Delete
-                </MenuItem>
-            </MenuList>
+                    <MenuList>
+                        <MenuItem
+                            icon={
+                                <Icon
+                                    as={PencilSquareIcon}
+                                    boxSize={'5'}
+                                    color={'gray.700'}
+                                />
+                            }
+                        >
+                            Edit
+                        </MenuItem>
+                        <MenuItem
+                            icon={
+                                <Icon
+                                    as={TrashIcon}
+                                    boxSize={'5'}
+                                    color={'gray.700'}
+                                />
+                            }
+                        >
+                            Delete
+                        </MenuItem>
+                    </MenuList>
+                </>
+            )}
         </Menu>
     );
 }
