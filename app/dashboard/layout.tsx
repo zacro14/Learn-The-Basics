@@ -57,7 +57,7 @@ export default function DashboardLayout({
     }
 
     if (status === 'unauthenticated') {
-        return router.push('/');
+        router.push('/');
     }
 
     return (

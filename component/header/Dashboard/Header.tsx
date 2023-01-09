@@ -7,6 +7,7 @@ import {
     Icon,
     Menu,
     MenuButton,
+    MenuDivider,
     MenuItem,
     MenuList,
     Text,
@@ -58,7 +59,7 @@ export function DashboardHeader() {
                     <MenuItem icon={<Icon as={UserIcon} boxSize={6} />}>
                         Account
                     </MenuItem>
-                    <Divider />
+                    <MenuDivider />
                     <MenuItem
                         onClick={handleSignout}
                         icon={
