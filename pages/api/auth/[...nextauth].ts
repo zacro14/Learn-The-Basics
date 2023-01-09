@@ -26,12 +26,6 @@ type Token = {
     id: string;
 };
 
-const Session = {
-    session: {
-        strategy: 'jwt',
-    },
-};
-
 const providers = [
     CredentialProvider({
         name: 'Credential',
@@ -43,11 +37,14 @@ const providers = [
             };
             const { data } = await ApiClientPublic.post('/auth/signin', {
                 ...payload,
+            }).catch((error) => {
+                // throw new Error(error);
+                return error;
             });
+
             if (data) {
                 return data;
             }
-            return null;
         },
     }),
 ];

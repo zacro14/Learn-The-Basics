@@ -12,7 +12,5 @@ export async function refreshAccessToken(
         throw new Error('error in getting a refresh token ');
     }
 
-    console.log('token', token);
-
-    return token.data;
+    return token.data.accessToken;
 }
