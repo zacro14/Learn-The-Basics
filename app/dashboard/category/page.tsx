@@ -10,20 +10,73 @@ import {
     Flex,
     Heading,
     Icon,
+    IconButton,
+    Menu,
+    MenuButton,
+    MenuItem,
+    MenuList,
     SimpleGrid,
     Spinner,
     useDisclosure,
 } from '@chakra-ui/react';
 import AddLessonCategory from 'component/modal/AddLessonCategory';
-import { PlusIcon, EllipsisVerticalIcon } from '@heroicons/react/24/outline';
+import {
+    PlusIcon,
+    EllipsisVerticalIcon,
+    PencilSquareIcon,
+    TrashIcon,
+} from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
+import { CustomIcon } from 'component/commons/icons/icon';
 
 export type CategoryResponse = {
     id: string;
     name: string;
     description: string;
 };
+
+function CardMenu() {
+    return (
+        <Menu>
+            <MenuButton
+                opacity={'0'}
+                _groupHover={{
+                    opacity: '1',
+                }}
+                as={IconButton}
+                aria-label="Options"
+                icon={
+                    <CustomIcon
+                        icon={EllipsisVerticalIcon}
+                        color={'gray.700'}
+                    />
+                }
+                variant="outline"
+            />
+            <MenuList>
+                <MenuItem
+                    icon={
+                        <Icon
+                            as={PencilSquareIcon}
+                            boxSize={'5'}
+                            color={'gray.700'}
+                        />
+                    }
+                >
+                    Edit
+                </MenuItem>
+                <MenuItem
+                    icon={
+                        <Icon as={TrashIcon} boxSize={'5'} color={'gray.700'} />
+                    }
+                >
+                    Delete
+                </MenuItem>
+            </MenuList>
+        </Menu>
+    );
+}
 
 export default function Category() {
     const { onClose, onOpen, isOpen } = useDisclosure();
@@ -62,7 +115,7 @@ export default function Category() {
             </Flex>
             <SimpleGrid my={'5'} columns={2} spacing={10}>
                 {data?.map((category: CategoryResponse) => (
-                    <Card bgColor={'white'} key={category.id}>
+                    <Card role={'group'} bgColor={'white'} key={category.id}>
                         <CardHeader>
                             <Flex
                                 alignItems={'center'}
@@ -71,11 +124,8 @@ export default function Category() {
                                 <Heading size="md" textTransform={'uppercase'}>
                                     {category.name}
                                 </Heading>
-                                <Icon
-                                    as={EllipsisVerticalIcon}
-                                    boxSize={'5'}
-                                    color={'gray.700'}
-                                />
+
+                                <CardMenu />
                             </Flex>
                         </CardHeader>
                         <Divider></Divider>
