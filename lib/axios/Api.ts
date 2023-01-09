@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { refreshAccessToken } from './refreshToken';
 import { getSession } from 'next-auth/react';
 
@@ -15,7 +15,7 @@ export const ApiClientPublic = axios.create({
     baseURL: process.env.API_BASE_URL,
 });
 
-//TODO create an authorization bearer for private api endpoints
+//TODO: create an authorization bearer for private api endpoints
 export const ApiClientPrivate = axios.create({
     withCredentials: true,
     baseURL: process.env.API_BASE_URL,
@@ -41,11 +41,11 @@ ApiClientPrivate.interceptors.response.use(
             originalRequest._retry = true;
             if (token) {
                 return refreshAccessToken(token.refresh_token).then(
-                    (accesToken) => {
+                    (accessToken) => {
+                        console.log(' access token ', accessToken);
                         originalRequest.headers[
                             'Authorization'
-                        ] = `Bearer ${accesToken}`;
-
+                        ] = `Bearer ${accessToken}`;
                         return ApiClientPrivate(originalRequest);
                     }
                 );
