@@ -29,7 +29,6 @@ import {
 import { useQuery } from 'react-query';
 import { GetCategory } from 'api/lessoncategory/GetCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
-import { useState } from 'react';
 
 export type CategoryResponse = {
     id: string;
@@ -57,7 +56,7 @@ function CardMenu() {
                         }
                         variant="outline"
                     />
-                    <MenuList>
+                    <MenuList alignItems={'center'}>
                         <MenuItem
                             icon={
                                 <Icon
@@ -70,11 +69,14 @@ function CardMenu() {
                             Edit
                         </MenuItem>
                         <MenuItem
+                            role={'group'}
+                            _groupHover={{ color: 'red.500' }}
                             icon={
                                 <Icon
                                     as={TrashIcon}
                                     boxSize={'5'}
                                     color={'gray.700'}
+                                    _groupHover={{ color: 'red.500' }}
                                 />
                             }
                         >
@@ -124,7 +126,12 @@ export default function Category() {
             </Flex>
             <SimpleGrid my={'5'} columns={2} spacing={10}>
                 {data?.map((category: CategoryResponse) => (
-                    <Card role={'group'} bgColor={'white'} key={category.id}>
+                    <Card
+                        role={'group'}
+                        bgColor={'white'}
+                        key={category.id}
+                        shadow={'lg'}
+                    >
                         <CardHeader>
                             <Flex
                                 alignItems={'center'}

@@ -1,6 +1,8 @@
+import { AxiosError, isAxiosError } from 'axios';
 import { ApiClientPublic } from 'lib/axios/Api';
 import { refreshAccessToken } from 'lib/axios/refreshToken';
 import NextAuth from 'next-auth/next';
+import { decode, JWT } from 'next-auth/jwt';
 import CredentialProvider from 'next-auth/providers/credentials';
 
 type AuthUser = {
@@ -38,8 +40,12 @@ const providers = [
             const { data } = await ApiClientPublic.post('/auth/signin', {
                 ...payload,
             }).catch((error) => {
-                // throw new Error(error);
-                return error;
+                if (isAxiosError(error)) {
+                    return Promise.reject(
+                        new Error(error.response?.data.message)
+                    );
+                }
+                throw new Error(error);
             });
 
             if (data) {

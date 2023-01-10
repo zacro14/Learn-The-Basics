@@ -3,18 +3,23 @@ import {
     Box,
     Button,
     Divider,
+    Grid,
+    GridItem,
     Heading,
     Icon,
     Menu,
     MenuButton,
     MenuDivider,
+    MenuGroup,
     MenuItem,
     MenuList,
+    SimpleGrid,
     Text,
 } from '@chakra-ui/react';
 import {
     ArrowRightOnRectangleIcon,
     UserIcon,
+    InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { ApiClientPrivate } from 'lib/axios/Api';
 import { signOut, useSession } from 'next-auth/react';
@@ -56,10 +61,32 @@ export function DashboardHeader() {
                     <Avatar cursor={'pointer'} name={session?.user.username} />
                 </MenuButton>
                 <MenuList>
-                    <MenuItem icon={<Icon as={UserIcon} boxSize={6} />}>
-                        Account
-                    </MenuItem>
+                    <SimpleGrid
+                        px={'3'}
+                        templateColumns={'32px 1fr'}
+                        spacing={'2'}
+                        alignItems={'center'}
+                    >
+                        <GridItem>
+                            <Avatar size={'sm'} name={session?.user.username} />
+                        </GridItem>
+                        <GridItem>
+                            <Text
+                                fontWeight={'extrabold'}
+                                fontSize={'large'}
+                                overflow={'hidden'}
+                            >
+                                {session?.user.username}
+                            </Text>
+                        </GridItem>
+                    </SimpleGrid>
+
                     <MenuDivider />
+                    <MenuItem
+                        icon={<Icon as={InformationCircleIcon} boxSize={6} />}
+                    >
+                        My Account
+                    </MenuItem>
                     <MenuItem
                         onClick={handleSignout}
                         icon={

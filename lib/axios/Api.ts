@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import { refreshAccessToken } from './refreshToken';
-import { getSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 
 type Token = {
     access_token: string;
@@ -24,7 +24,9 @@ export const ApiClientPrivate = axios.create({
 ApiClientPrivate.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
         const token = await getToken();
-        config.headers!.Authorization = `Bearer ${token?.access_token}`;
+
+        // config?.headers = `Bearer ${token?.access_token}`;
+
         return config;
     },
     (error) => Promise.reject(error)
@@ -42,10 +44,10 @@ ApiClientPrivate.interceptors.response.use(
             if (token) {
                 return refreshAccessToken(token.refresh_token).then(
                     (accessToken) => {
-                        console.log(' access token ', accessToken);
-                        originalRequest.headers[
-                            'Authorization'
-                        ] = `Bearer ${accessToken}`;
+                        console.log('accessToken', accessToken);
+
+                        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+
                         return ApiClientPrivate(originalRequest);
                     }
                 );

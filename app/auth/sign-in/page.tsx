@@ -33,15 +33,16 @@ type Inputs = {
 
 export default function Login() {
     const [show, setShow] = useState(false);
-    const [signInError, setSigninError] = useState<boolean>(false);
+    const [signInError, setSigninError] = useState<string | undefined>(
+        undefined
+    );
     const router = useRouter();
 
     const {
         register,
         handleSubmit,
         reset,
-        watch,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<Inputs>();
 
     const handleClick = () => setShow(!show);
@@ -55,8 +56,10 @@ export default function Login() {
             }
         );
 
+        console.log('status', signInStatus);
+
         if (!signInStatus?.ok) {
-            return setSigninError(true);
+            return setSigninError(signInStatus?.error);
         }
 
         reset();
@@ -78,7 +81,7 @@ export default function Login() {
                         {signInError && (
                             <Alert status="error" my={'3'}>
                                 <AlertIcon />
-                                {'Invalid username or password'}
+                                {signInError}
                             </Alert>
                         )}
                         <FormControl isInvalid={errors.username ? true : false}>
@@ -138,6 +141,7 @@ export default function Login() {
                             type="submit"
                             colorScheme={'green'}
                             width={'full'}
+                            isLoading={isSubmitting}
                         >
                             Sign In
                         </Button>

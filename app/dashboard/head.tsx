@@ -7,7 +7,6 @@ export default function Head() {
                 name="viewport"
             />
             <meta name="description" content="Dashboard" />
-            <link rel="icon" href="/favicon.ico" />
         </>
-    )
+    );
 }
