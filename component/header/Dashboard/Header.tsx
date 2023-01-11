@@ -82,11 +82,15 @@ export function DashboardHeader() {
                     </SimpleGrid>
 
                     <MenuDivider />
-                    <MenuItem
-                        icon={<Icon as={InformationCircleIcon} boxSize={6} />}
-                    >
-                        My Account
-                    </MenuItem>
+                    <Link href={'/dashboard/account'}>
+                        <MenuItem
+                            icon={
+                                <Icon as={InformationCircleIcon} boxSize={6} />
+                            }
+                        >
+                            My Account
+                        </MenuItem>
+                    </Link>
                     <MenuItem
                         onClick={handleSignout}
                         icon={
