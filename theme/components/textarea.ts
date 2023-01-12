@@ -20,8 +20,9 @@ const defaultProps: ComponentDefaultProps = {
 };
 const variants = {
     outline: {
+        borderColor: 'gray.300',
         _hover: {
-            borderColor: 'green.500',
+            borderColor: 'gray.500',
         },
         _focus: {
             borderColor: 'green.500',

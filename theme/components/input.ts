@@ -27,11 +27,12 @@ const defaultProps = {
 const variants = {
     outline: {
         field: {
+            borderColor: 'gray.300',
             _placeholder: {
                 color: 'gray.800',
             },
             _hover: {
-                borderColor: 'green.500',
+                borderColor: 'gray.500',
             },
             _focus: {
                 borderColor: 'green.500',
