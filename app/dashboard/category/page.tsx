@@ -27,8 +27,9 @@ import {
     TrashIcon,
 } from '@heroicons/react/24/outline';
 import { useQuery } from 'react-query';
-import { GetCategory } from 'api/lessoncategory/GetCategory';
+import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
+import { Loading } from 'component/loading';
 
 export type CategoryResponse = {
     id: string;
@@ -102,15 +103,7 @@ export default function Category() {
     }
 
     if (isLoading) {
-        return (
-            <Flex
-                sx={{ height: '100vh' }}
-                justifyContent={'center'}
-                alignItems={'center'}
-            >
-                <Spinner color="green.500" />
-            </Flex>
-        );
+        return <Loading />;
     }
 
     return (
