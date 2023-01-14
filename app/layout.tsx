@@ -19,7 +19,7 @@ export default function RootLayout({
         queryCache: new QueryCache({
             onError: (error) =>
                 toast({
-                    title: `Error `,
+                    title: `Error`,
                     description: `${error}`,
                     status: 'error',
                     isClosable: true,

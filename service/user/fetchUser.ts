@@ -1,6 +1,6 @@
 import { ApiClientPrivate } from 'lib/axios/Api';
 
-type User = {
+export type User = {
     id: string;
     email: string;
     username: string;
@@ -14,6 +14,14 @@ export async function fetchUser(userId: string | undefined): Promise<User> {
     try {
         const { data } = await ApiClientPrivate.get(`/user/${userId}`);
         return data;
+    } catch (error) {
+        throw new Error();
+    }
+}
+
+export async function updateUser(data: User) {
+    try {
+        return ApiClientPrivate.patch(`/user${data.id}`, data);
     } catch (error) {
         throw new Error();
     }
