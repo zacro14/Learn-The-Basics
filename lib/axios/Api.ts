@@ -44,10 +44,7 @@ ApiClientPrivate.interceptors.response.use(
             if (token) {
                 return refreshAccessToken(token.refresh_token).then(
                     (accessToken) => {
-                        console.log('accessToken', accessToken);
-
                         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-
                         return ApiClientPrivate(originalRequest);
                     }
                 );
