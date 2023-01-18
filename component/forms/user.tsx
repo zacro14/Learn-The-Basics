@@ -94,17 +94,23 @@ export function UserFormTemplate() {
                 <FormControl>
                     <FormLabel fontWeight={800}>Username</FormLabel>
                     <Input
+                        bgColor={'white'}
                         defaultValue={data?.username}
                         {...register('username')}
                     />
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight={800}>Email</FormLabel>
-                    <Input defaultValue={data?.email} {...register('email')} />
+                    <Input
+                        bgColor={'white'}
+                        defaultValue={data?.email}
+                        {...register('email')}
+                    />
                 </FormControl>
                 <FormControl>
                     <FormLabel fontWeight={800}>First Name</FormLabel>
                     <Input
+                        bgColor={'white'}
                         defaultValue={data?.firstname}
                         {...register('firstname')}
                     />
@@ -112,6 +118,7 @@ export function UserFormTemplate() {
                 <FormControl>
                     <FormLabel fontWeight={800}>Last Name</FormLabel>
                     <Input
+                        bgColor={'white'}
                         defaultValue={data?.lastname}
                         {...register('lastname')}
                     />
