@@ -23,17 +23,19 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
 
-type TAddLessonProps = {
+export type TAddLessonProps = {
     isOpen: boolean;
     onClose: () => void;
+    title?: string;
 };
 
-type TCategoryData = {
+export type TCategoryData = {
+    id?: string;
     name: string;
     description: string;
 };
 
-const schema = yup.object({
+export const schema = yup.object({
     name: yup.string().required('lesson category title is required'),
     description: yup
         .string()
@@ -42,9 +44,10 @@ const schema = yup.object({
         .min(5, 'min  of 5 characters'),
 });
 
-export default function AddLessonCategory({
+export function AddLessonCategory({
     isOpen,
     onClose,
+    title = 'Add Lesson Category',
 }: TAddLessonProps) {
     const toast = useToast();
     const query = useQueryClient();
@@ -91,7 +94,7 @@ export default function AddLessonCategory({
             <ModalOverlay />
             <form onSubmit={onSubmit}>
                 <ModalContent>
-                    <ModalHeader>Add Lesson Category</ModalHeader>
+                    <ModalHeader>{title}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Container>
