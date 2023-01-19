@@ -17,9 +17,9 @@ import {
     MenuList,
     SimpleGrid,
     Spinner,
+    Text,
     useDisclosure,
 } from '@chakra-ui/react';
-import AddLessonCategory from 'component/modal/AddLessonCategory';
 import {
     PlusIcon,
     EllipsisVerticalIcon,
@@ -30,6 +30,7 @@ import { useQuery } from 'react-query';
 import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
 import { Loading } from 'component/loading';
+import { AddLessonCategory } from 'component/modal';
 
 export type CategoryResponse = {
     id: string;
@@ -37,7 +38,11 @@ export type CategoryResponse = {
     description: string;
 };
 
-function CardMenu() {
+type TCardMenu = {
+    onOpen: () => void;
+};
+
+function CardMenu({ onOpen }: TCardMenu) {
     return (
         <Menu>
             {({ isOpen }) => (
@@ -59,6 +64,7 @@ function CardMenu() {
                     />
                     <MenuList alignItems={'center'}>
                         <MenuItem
+                            onClick={onOpen}
                             icon={
                                 <Icon
                                     as={PencilSquareIcon}
@@ -134,7 +140,7 @@ export default function Category() {
                                     {category.name}
                                 </Heading>
 
-                                <CardMenu />
+                                <CardMenu onOpen={onOpen} />
                             </Flex>
                         </CardHeader>
                         <Divider></Divider>
