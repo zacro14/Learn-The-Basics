@@ -25,30 +25,38 @@ import { useMutation, useQueryClient } from 'react-query';
 import { schema, TCategoryData } from './AddLessonCategory';
 
 type ModalProps = {
-    title: string;
     isOpen: boolean;
     onClose: () => void;
-    children: React.ReactNode;
+    data:
+        | {
+              id: string;
+              name: string;
+              description: string;
+          }
+        | undefined;
 };
-export default function CategoryModal({
-    isOpen,
-    onClose,
-    children,
-    title,
-}: ModalProps) {
+export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
     const toast = useToast();
     const query = useQueryClient();
+
+    console.log('data => ', data);
+    const defaultValues = {
+        name: data?.name,
+        description: data?.description,
+    };
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(schema) });
+    } = useForm({
+        // resolver: yupResolver(schema),
+    });
 
     const mutation = useMutation(
         (categorydata: TCategoryData) => {
             return ApiClientPrivate.patch<CategoryResponse>(
-                `/category/${categorydata.id}`,
+                `/category/${data?.id}`,
                 categorydata
             );
         },
@@ -61,7 +69,7 @@ export default function CategoryModal({
                     isClosable: true,
                 });
             },
-            onSuccess() {
+            onSuccess: () => {
                 query.invalidateQueries('category');
                 toast({
                     title: `Success`,
@@ -81,34 +89,38 @@ export default function CategoryModal({
             <ModalOverlay />
             <ModalContent>
                 <form onSubmit={onSubmit}>
-                    <ModalHeader>Edit Category</ModalHeader>
+                    <ModalHeader textTransform={'capitalize'}>
+                        Edit Category {data?.name}
+                    </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <Container>
                             <FormControl isInvalid={errors.name && true}>
                                 <FormLabel>Title</FormLabel>
                                 <Input
+                                    defaultValue={defaultValues.name}
                                     placeholder=" eg. math"
                                     {...register('name')}
                                 />
-                                {errors.name && (
+                                {/* {errors.name && (
                                     <FormErrorMessage>
                                         {errors.name?.message}
                                     </FormErrorMessage>
-                                )}
+                                )} */}
                             </FormControl>
                             <FormControl isInvalid={errors.description && true}>
                                 <FormLabel>Decription</FormLabel>
                                 <Textarea
                                     size={'lg'}
+                                    defaultValue={defaultValues.description}
                                     placeholder=" category description"
                                     {...register('description')}
                                 />
-                                {errors.description && (
+                                {/* {errors.description && (
                                     <FormErrorMessage>
                                         {errors.description.message}
                                     </FormErrorMessage>
-                                )}
+                                )} */}
                             </FormControl>
                         </Container>
                     </ModalBody>

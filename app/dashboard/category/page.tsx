@@ -31,6 +31,8 @@ import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
 import { Loading } from 'component/loading';
 import { AddLessonCategory } from 'component/modal';
+import CategoryModal from 'component/modal/EditCategory';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 export type CategoryResponse = {
     id: string;
@@ -40,9 +42,21 @@ export type CategoryResponse = {
 
 type TCardMenu = {
     onOpen: () => void;
+    setSelectedCategory: Dispatch<SetStateAction<CategoryResponse | undefined>>;
+    data:
+        | {
+              id: string;
+              name: string;
+              description: string;
+          }
+        | undefined;
 };
 
-function CardMenu({ onOpen }: TCardMenu) {
+function CardMenu({ data, onOpen, setSelectedCategory }: TCardMenu) {
+    const handleEditCategory = () => {
+        setSelectedCategory(data);
+        onOpen();
+    };
     return (
         <Menu>
             {({ isOpen }) => (
@@ -64,7 +78,7 @@ function CardMenu({ onOpen }: TCardMenu) {
                     />
                     <MenuList alignItems={'center'}>
                         <MenuItem
-                            onClick={onOpen}
+                            onClick={handleEditCategory}
                             icon={
                                 <Icon
                                     as={PencilSquareIcon}
@@ -98,6 +112,15 @@ function CardMenu({ onOpen }: TCardMenu) {
 
 export default function Category() {
     const { onClose, onOpen, isOpen } = useDisclosure();
+    const {
+        onClose: onCloseEditModal,
+        onOpen: onOpenEditModal,
+        isOpen: isOpenEditModal,
+    } = useDisclosure();
+    const [selectedCategory, setSelectedCategory] = useState<
+        CategoryResponse | undefined
+    >(undefined);
+
     const { data, isError, isLoading } = useQuery('category', GetCategory);
 
     if (isError) {
@@ -140,7 +163,11 @@ export default function Category() {
                                     {category.name}
                                 </Heading>
 
-                                <CardMenu onOpen={onOpen} />
+                                <CardMenu
+                                    data={category}
+                                    setSelectedCategory={setSelectedCategory}
+                                    onOpen={onOpenEditModal}
+                                />
                             </Flex>
                         </CardHeader>
                         <Divider></Divider>
@@ -150,6 +177,11 @@ export default function Category() {
             </SimpleGrid>
 
             <AddLessonCategory isOpen={isOpen} onClose={onClose} />
+            <CategoryModal
+                data={selectedCategory}
+                isOpen={isOpenEditModal}
+                onClose={onCloseEditModal}
+            />
         </Box>
     );
 }
