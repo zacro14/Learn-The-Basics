@@ -39,7 +39,6 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
     const toast = useToast();
     const query = useQueryClient();
 
-    console.log('data => ', data);
     const defaultValues = {
         name: data?.name,
         description: data?.description,
@@ -50,11 +49,11 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        // resolver: yupResolver(schema),
+        resolver: yupResolver(schema),
     });
 
     const mutation = useMutation(
-        (categorydata: TCategoryData) => {
+        (categorydata: unknown) => {
             return ApiClientPrivate.patch<CategoryResponse>(
                 `/category/${data?.id}`,
                 categorydata
@@ -73,7 +72,7 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
                 query.invalidateQueries('category');
                 toast({
                     title: `Success`,
-                    description: 'Sucessfully added a new lesson category',
+                    description: 'Sucessfully edited a lesson category',
                     status: 'success',
                     isClosable: true,
                 });
@@ -90,7 +89,7 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
             <ModalContent>
                 <form onSubmit={onSubmit}>
                     <ModalHeader textTransform={'capitalize'}>
-                        Edit Category {data?.name}
+                        Edit Category
                     </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
@@ -102,11 +101,6 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
                                     placeholder=" eg. math"
                                     {...register('name')}
                                 />
-                                {/* {errors.name && (
-                                    <FormErrorMessage>
-                                        {errors.name?.message}
-                                    </FormErrorMessage>
-                                )} */}
                             </FormControl>
                             <FormControl isInvalid={errors.description && true}>
                                 <FormLabel>Decription</FormLabel>
@@ -116,11 +110,6 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
                                     placeholder=" category description"
                                     {...register('description')}
                                 />
-                                {/* {errors.description && (
-                                    <FormErrorMessage>
-                                        {errors.description.message}
-                                    </FormErrorMessage>
-                                )} */}
                             </FormControl>
                         </Container>
                     </ModalBody>

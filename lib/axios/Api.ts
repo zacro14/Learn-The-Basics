@@ -25,7 +25,7 @@ ApiClientPrivate.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
         const token = await getToken();
 
-        // config?.headers = `Bearer ${token?.access_token}`;
+        // config.headers = `Bearer ${token?.access_token}`;
 
         return config;
     },
