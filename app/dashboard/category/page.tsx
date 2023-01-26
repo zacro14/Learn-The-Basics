@@ -30,9 +30,10 @@ import { useQuery } from 'react-query';
 import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CustomIcon } from 'component/commons/icons/icon';
 import { Loading } from 'component/loading';
-import { AddLessonCategory } from 'component/modal';
-import CategoryModal from 'component/modal/EditCategory';
-import { Dispatch, SetStateAction, useState } from 'react';
+import CategoryModal from 'component/modal/category/EditCategory';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { AddLessonCategory, DeleteModal } from 'component/modal/category';
+import { FocusableElement } from '@chakra-ui/utils';
 
 export type CategoryResponse = {
     id: string;
@@ -42,6 +43,7 @@ export type CategoryResponse = {
 
 type TCardMenu = {
     onOpen: () => void;
+    onOpenDeleteModal: () => void;
     setSelectedCategory: Dispatch<SetStateAction<CategoryResponse | undefined>>;
     data:
         | {
@@ -52,7 +54,12 @@ type TCardMenu = {
         | undefined;
 };
 
-function CardMenu({ data, onOpen, setSelectedCategory }: TCardMenu) {
+function CardMenu({
+    data,
+    onOpen,
+    onOpenDeleteModal,
+    setSelectedCategory,
+}: TCardMenu) {
     const handleEditCategory = () => {
         setSelectedCategory(data);
         onOpen();
@@ -90,6 +97,7 @@ function CardMenu({ data, onOpen, setSelectedCategory }: TCardMenu) {
                             Edit
                         </MenuItem>
                         <MenuItem
+                            onClick={onOpenDeleteModal}
                             role={'group'}
                             _groupHover={{ color: 'red.500' }}
                             icon={
@@ -117,11 +125,17 @@ export default function Category() {
         onOpen: onOpenEditModal,
         isOpen: isOpenEditModal,
     } = useDisclosure();
+    const {
+        onClose: onCloseDeleteModal,
+        onOpen: onOpenDeleteModal,
+        isOpen: isOpenDeleteModal,
+    } = useDisclosure();
     const [selectedCategory, setSelectedCategory] = useState<
         CategoryResponse | undefined
     >(undefined);
 
     const { data, isError, isLoading } = useQuery('category', GetCategory);
+    const cancelRef = useRef<HTMLButtonElement | FocusableElement | null>(null);
 
     if (isError) {
         return (
@@ -164,6 +178,7 @@ export default function Category() {
                                 </Heading>
 
                                 <CardMenu
+                                    onOpenDeleteModal={onOpenDeleteModal}
                                     data={category}
                                     setSelectedCategory={setSelectedCategory}
                                     onOpen={onOpenEditModal}
@@ -181,6 +196,11 @@ export default function Category() {
                 data={selectedCategory}
                 isOpen={isOpenEditModal}
                 onClose={onCloseEditModal}
+            />
+            <DeleteModal
+                cancelRef={cancelRef}
+                isOpen={isOpenDeleteModal}
+                onClose={onCloseDeleteModal}
             />
         </Box>
     );
