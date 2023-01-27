@@ -64,6 +64,11 @@ function CardMenu({
         setSelectedCategory(data);
         onOpen();
     };
+
+    const handleDeleteCategory = () => {
+        setSelectedCategory(data);
+        onOpenDeleteModal();
+    };
     return (
         <Menu>
             {({ isOpen }) => (
@@ -97,7 +102,7 @@ function CardMenu({
                             Edit
                         </MenuItem>
                         <MenuItem
-                            onClick={onOpenDeleteModal}
+                            onClick={handleDeleteCategory}
                             role={'group'}
                             _groupHover={{ color: 'red.500' }}
                             icon={
@@ -198,6 +203,7 @@ export default function Category() {
                 onClose={onCloseEditModal}
             />
             <DeleteModal
+                data={selectedCategory}
                 cancelRef={cancelRef}
                 isOpen={isOpenDeleteModal}
                 onClose={onCloseDeleteModal}
