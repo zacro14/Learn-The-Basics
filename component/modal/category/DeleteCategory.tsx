@@ -73,6 +73,7 @@ export function DeleteModal({ onClose, isOpen, cancelRef, data }: Props) {
                             Cancel
                         </Button>
                         <Button
+                            isLoading={mutation.isLoading}
                             onClick={handleDeleteCategory}
                             colorScheme="red"
                             ml={3}
