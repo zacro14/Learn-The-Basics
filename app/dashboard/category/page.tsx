@@ -16,8 +16,6 @@ import {
     MenuItem,
     MenuList,
     SimpleGrid,
-    Spinner,
-    Text,
     useDisclosure,
 } from '@chakra-ui/react';
 import {

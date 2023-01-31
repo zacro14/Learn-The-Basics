@@ -119,6 +119,7 @@ export default function CategoryModal({ isOpen, onClose, data }: ModalProps) {
                             mr={3}
                             loadingText={'loading'}
                             type={'submit'}
+                            isLoading={mutation.isLoading}
                         >
                             Edit
                         </Button>
