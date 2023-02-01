@@ -1,10 +1,16 @@
+import { Box } from '@chakra-ui/react';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 export const Editor = () => {
     const editor = useEditor({
         extensions: [StarterKit],
-        content: '<p>Hello World! 🌎️</p>',
+        content: '',
+        editable: true,
     });
-    return <EditorContent editor={editor}></EditorContent>;
+    return (
+        <Box border={'2px'} rounded={'md'} minH={'40'}>
+            <EditorContent editor={editor} spellCheck={false} />
+        </Box>
+    );
 };
