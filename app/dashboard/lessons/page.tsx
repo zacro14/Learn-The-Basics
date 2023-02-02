@@ -8,6 +8,9 @@ import {
     FormControl,
     FormLabel,
     Stack,
+    Button,
+    HStack,
+    Center,
 } from '@chakra-ui/react';
 import { Editor } from 'component/editor';
 import { TCategoryData } from 'component/modal/category';
@@ -27,21 +30,27 @@ function SelectionCategory() {
 }
 export default function Lessons() {
     return (
-        <Box as={Card} mx={'16'} mt={10} p={'5'} bgColor={'white'}>
-            <Heading my={'5'} fontSize={'xl'}>
-                Create Lessons
-            </Heading>
-            <Stack pl={'10'}>
-                <FormControl>
-                    <FormLabel>Select Lesson Category</FormLabel>
-                    <SelectionCategory />
-                </FormControl>
+        <Center>
+            <Container as={Card} mx={'16'} mt={10} p={'5'} bgColor={'white'}>
+                <Heading my={'5'} fontSize={'xl'}>
+                    Create Lessons
+                </Heading>
+                <Stack pl={'10'}>
+                    <FormControl>
+                        <FormLabel>Select Lesson Category</FormLabel>
+                        <SelectionCategory />
+                    </FormControl>
 
-                <FormControl>
-                    <FormLabel>Input the Question</FormLabel>
-                    <Editor />
-                </FormControl>
-            </Stack>
-        </Box>
+                    <FormControl>
+                        <FormLabel>Input the Question</FormLabel>
+                        <Editor />
+                    </FormControl>
+                    <HStack>
+                        <Button variant={'base'}>Publish</Button>
+                        <Button variant={'ghost'}>Save draft</Button>
+                    </HStack>
+                </Stack>
+            </Container>
+        </Center>
     );
 }

@@ -7,10 +7,18 @@ export const Editor = () => {
         extensions: [StarterKit],
         content: '',
         editable: true,
+        editorProps: {
+            attributes: {
+                class: 'min-heigth: 50rem',
+            },
+        },
     });
+    const json = editor?.getJSON();
+
+    console.log(json);
     return (
         <Box border={'2px'} rounded={'md'} minH={'40'}>
-            <EditorContent editor={editor} spellCheck={false} />
+            <EditorContent editor={editor} />
         </Box>
     );
 };

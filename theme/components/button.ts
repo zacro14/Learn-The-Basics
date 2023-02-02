@@ -1,4 +1,5 @@
 import { ComponentStyleConfig, SystemStyleObject } from '@chakra-ui/react';
+import { getParseTreeNode } from 'typescript';
 
 const baseStyle: SystemStyleObject = {
     fontWeight: '500',
@@ -22,6 +23,13 @@ const variants: SystemStyleObject = {
 
         _hover: {
             color: 'green.500',
+        },
+    },
+    ghost: {
+        color: 'gray.700',
+        _hover: {
+            color: 'green.800',
+            bgColor: 'green.100',
         },
     },
     base: {

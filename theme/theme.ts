@@ -11,10 +11,16 @@ const styles: Styles = {
         shadows: {
             outline: '0 0 0 1px green.500',
         },
+        '.ProseMirror': {
+            minH: '50rem',
+            '&:focus': {
+                outline: 'none',
+            },
+        },
     }),
 };
 
-const themeOvirrides: Partial<ChakraTheme> = {
+const themeOverrides: Partial<ChakraTheme> = {
     components,
     styles,
     ...foundations,
@@ -24,7 +30,7 @@ const theme = extendTheme({
         heading: `'Opens Sans', sans-serif`,
         body: `'Poppins', 'sans-serif'`,
     },
-    ...themeOvirrides,
+    ...themeOverrides,
 });
 
 export default theme;
