@@ -16,6 +16,8 @@
         "@fontsource/poppins": "^4.5.10",
         "@heroicons/react": "^2.0.13",
         "@hookform/resolvers": "^2.9.10",
+        "@tiptap/extension-placeholder": "^2.0.0-beta.212",
+        "@tiptap/pm": "^2.0.0-beta.212",
         "@tiptap/react": "^2.0.0-beta.209",
         "@tiptap/starter-kit": "^2.0.0-beta.209",
         "@types/node": "18.11.9",

@@ -11,6 +11,7 @@ import {
     Button,
     HStack,
     Center,
+    Input,
 } from '@chakra-ui/react';
 import { Editor } from 'component/editor';
 import { TCategoryData } from 'component/modal/category';
@@ -35,14 +36,21 @@ export default function Lessons() {
                 <Heading my={'5'} fontSize={'xl'}>
                     Create Lessons
                 </Heading>
-                <Stack pl={'10'}>
+                <Stack spacing={'10'} pl={'10'}>
                     <FormControl>
                         <FormLabel>Select Lesson Category</FormLabel>
                         <SelectionCategory />
                     </FormControl>
+                    <FormControl>
+                        <Input
+                            fontSize={'5xl'}
+                            _placeholder={{ color: 'black' }}
+                            variant={'unstyled'}
+                            placeholder="Title here..."
+                        />
+                    </FormControl>
 
                     <FormControl>
-                        <FormLabel>Input the Question</FormLabel>
                         <Editor />
                     </FormControl>
                     <HStack>

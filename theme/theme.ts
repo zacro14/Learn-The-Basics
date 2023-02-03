@@ -12,9 +12,17 @@ const styles: Styles = {
             outline: '0 0 0 1px green.500',
         },
         '.ProseMirror': {
-            minH: '50rem',
+            p: '3',
+            minH: '20',
             '&:focus': {
                 outline: 'none',
+            },
+            'p.is-editor-empty:first-child::before': {
+                content: 'attr(data-placeholder)',
+                color: 'gray.500',
+                float: 'left',
+                pointerEvents: 'none',
+                height: 0,
             },
         },
     }),
