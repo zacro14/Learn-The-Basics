@@ -21,7 +21,6 @@ export const Editor = () => {
     });
     const json = editor?.getJSON();
 
-    console.log(json);
     return (
         <Box border={'2px'} rounded={'md'} minH={'40'}>
             <EditorContent editor={editor} />
