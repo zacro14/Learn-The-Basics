@@ -49,7 +49,6 @@ function Tags(register: any) {
     };
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setTagValue(event.target.value);
-        onOpen();
     };
 
     return (
