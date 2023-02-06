@@ -1798,6 +1798,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-blockquote@npm:^2.0.0-beta.212":
+  version: 2.0.0-beta.212
+  resolution: "@tiptap/extension-blockquote@npm:2.0.0-beta.212"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.1
+  checksum: 73cdce45886b6f3c66e6a5f00cba976e4fd00d2b223b84b10d640b217fe356a8a904f9927f431d63c1d5e416da8176f22e079b96ac952dc2c3e66f99f607a24b
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-bold@npm:^2.0.0-beta.209":
   version: 2.0.0-beta.209
   resolution: "@tiptap/extension-bold@npm:2.0.0-beta.209"
@@ -1941,6 +1950,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tiptap/extension-link@npm:^2.0.0-beta.212":
+  version: 2.0.0-beta.212
+  resolution: "@tiptap/extension-link@npm:2.0.0-beta.212"
+  dependencies:
+    linkifyjs: ^3.0.5
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.209
+    "@tiptap/pm": ^2.0.0-beta.209
+  checksum: 53a0f6041445395eda0f17cd772579458877100e52b2177240203e441056f078cf3184d1cf24d7469850e50f08fe1060f0c6437dc94c035179d3233be282eb4f
+  languageName: node
+  linkType: hard
+
 "@tiptap/extension-list-item@npm:^2.0.0-beta.209":
   version: 2.0.0-beta.209
   resolution: "@tiptap/extension-list-item@npm:2.0.0-beta.209"
@@ -1993,6 +2014,15 @@ __metadata:
   peerDependencies:
     "@tiptap/core": ^2.0.0-beta.193
   checksum: ea63f3a834059bc6a7cdf136a546852c64a99d6617946839962fc15db523b54dc9ef03c05a315407d54b627f1192ce70196aa7c747c4b2010dead8eaa66a19a0
+  languageName: node
+  linkType: hard
+
+"@tiptap/extension-underline@npm:^2.0.0-beta.212":
+  version: 2.0.0-beta.212
+  resolution: "@tiptap/extension-underline@npm:2.0.0-beta.212"
+  peerDependencies:
+    "@tiptap/core": ^2.0.0-beta.209
+  checksum: 758c699922476718cddea7513fb367279bb16ae6f0290beb554f38281d20982f7dc5873deb6246a77bb044ecedb0cb59e6ac170182a644d0c1c59731d362d4ae
   languageName: node
   linkType: hard
 
@@ -3963,7 +3993,10 @@ __metadata:
     "@fontsource/poppins": ^4.5.10
     "@heroicons/react": ^2.0.13
     "@hookform/resolvers": ^2.9.10
+    "@tiptap/extension-blockquote": ^2.0.0-beta.212
+    "@tiptap/extension-link": ^2.0.0-beta.212
     "@tiptap/extension-placeholder": ^2.0.0-beta.212
+    "@tiptap/extension-underline": ^2.0.0-beta.212
     "@tiptap/pm": ^2.0.0-beta.212
     "@tiptap/react": ^2.0.0-beta.209
     "@tiptap/starter-kit": ^2.0.0-beta.209
@@ -4032,6 +4065,13 @@ __metadata:
   dependencies:
     uc.micro: ^1.0.1
   checksum: 3e0a29921269c14eb7ac6f5db2da68d4854ea9acca6e9014a323f75f2dd39b197ffab57c1fbd6a906ceb021aad3ee6d7ba7d0181236dd9630ffc452b392f7f71
+  languageName: node
+  linkType: hard
+
+"linkifyjs@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "linkifyjs@npm:3.0.5"
+  checksum: a926669022f41db6464071d3df2b2de71531d5a83db478e0e0b16617cbabde32c89ff0f46406927d53b31eb8f7501b7bb53410aedf05890c38900a55a1cc5283
   languageName: node
   linkType: hard
 

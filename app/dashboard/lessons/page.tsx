@@ -19,6 +19,7 @@ import {
     PopoverContent,
     PopoverTrigger,
     PopoverAnchor,
+    Flex,
 } from '@chakra-ui/react';
 import { Editor } from 'component/editor';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -96,11 +97,21 @@ export default function Lessons() {
     };
 
     return (
-        <Center>
-            <Container as={Card} mx={'16'} mt={10} p={'5'} bgColor={'white'}>
-                <Heading my={'5'} fontSize={'xl'}>
-                    Create Lessons
-                </Heading>
+        <Center display={'flex'} flexDirection={'column'} mx={'16'}>
+            <Container>
+                <Flex justifyContent={'space-between'} py={'5'} width={'full'}>
+                    <Heading my={'5'} fontSize={'xl'}>
+                        Create Lessons
+                    </Heading>
+                    <HStack>
+                        <Button variant={'ghost'} fontWeight={'bold'}>
+                            Edit
+                        </Button>
+                        <Button variant={'ghost'}>Preview</Button>
+                    </HStack>
+                </Flex>
+            </Container>
+            <Container as={Card} p={'5'} bgColor={'white'}>
                 <Stack spacing={'10'}>
                     <FormControl>
                         <FormLabel>Select Lesson Category</FormLabel>

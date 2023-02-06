@@ -1,4 +1,7 @@
 import Placeholder from '@tiptap/extension-placeholder';
+import Link from '@tiptap/extension-link';
+import Blockquote from '@tiptap/extension-blockquote';
+import Underline from '@tiptap/extension-underline';
 import { Box, IconButton, Tooltip } from '@chakra-ui/react';
 import {
     Editor as TiptapEditor,
@@ -17,14 +20,12 @@ import {
     FaCode,
     FaUnderline,
 } from 'react-icons/fa';
-import { useState } from 'react';
 
 type EditorProps = {
     editor: TiptapEditor | null;
 };
 
 function EditMenu({ editor }: EditorProps) {
-    // here we return null if no intance of the editor
     if (!editor) return null;
 
     const Icons = [
@@ -45,6 +46,32 @@ function EditMenu({ editor }: EditorProps) {
             italic: () => editor.chain().focus().toggleItalic().run(),
             ol: () => editor.chain().toggleOrderedList().run(),
             ul: () => editor.chain().toggleBulletList().run(),
+            heading: () =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run(),
+            link: () => {
+                const prevUrl = editor.getAttributes('link').href;
+                const url = window.prompt('URL', prevUrl);
+
+                if (url === '') {
+                    editor
+                        .chain()
+                        .focus()
+                        .extendMarkRange('link')
+                        .unsetLink()
+                        .run();
+                }
+                if (url) {
+                    editor
+                        .chain()
+                        .focus()
+                        .extendMarkRange('link')
+                        .setLink({ href: url })
+                        .run();
+                }
+            },
+            code: () => editor.chain().toggleCodeBlock().run(),
+            qoute: () => editor.chain().focus().toggleBlockquote().run(),
+            underline: () => editor.chain().toggleUnderline().run(),
         };
 
         if (commands[name]) {
@@ -59,7 +86,6 @@ function EditMenu({ editor }: EditorProps) {
                     <span>
                         <IconButton
                             mr={'1'}
-                            isActive={editor.isActive(name) ? true : false}
                             onClick={() => handleCommand(name)}
                             variant={'ghost'}
                             aria-label={label}
@@ -79,6 +105,11 @@ export const Editor = () => {
             Placeholder.configure({
                 placeholder: 'Write your content here...',
             }),
+            Link.configure({
+                openOnClick: false,
+            }),
+            Blockquote,
+            Underline,
         ],
         content: '',
         editable: true,
@@ -92,7 +123,7 @@ export const Editor = () => {
     return (
         <Box border={'2px'} rounded={'md'} minH={'40'}>
             <EditMenu editor={editor} />
-            <EditorContent editor={editor} />
+            <EditorContent editor={editor} translate={'no'} />
         </Box>
     );
 };
