@@ -4,8 +4,10 @@ import Blockquote from '@tiptap/extension-blockquote';
 import Underline from '@tiptap/extension-underline';
 import { Box, IconButton, Tooltip } from '@chakra-ui/react';
 import {
+    Editor,
     Editor as TiptapEditor,
     EditorContent,
+    PureEditorContent,
     useEditor,
 } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -20,12 +22,13 @@ import {
     FaCode,
     FaUnderline,
 } from 'react-icons/fa';
+import { useEffect, useRef } from 'react';
 
-type EditorProps = {
+type EditorMenu = {
     editor: TiptapEditor | null;
 };
 
-function EditMenu({ editor }: EditorProps) {
+function EditMenu({ editor }: EditorMenu) {
     if (!editor) return null;
 
     const Icons = [
@@ -98,7 +101,19 @@ function EditMenu({ editor }: EditorProps) {
     );
 }
 
-export const Editor = () => {
+type EditorProps = {
+    isEditable?: boolean;
+    name: string;
+    setValue: (name: string, value: any) => void;
+    register: any;
+};
+
+export const TipTapEditor = ({
+    isEditable = false,
+    register,
+    setValue,
+    name,
+}: EditorProps) => {
     const editor = useEditor({
         extensions: [
             StarterKit,
@@ -108,7 +123,6 @@ export const Editor = () => {
             Link.configure({
                 openOnClick: false,
             }),
-            Blockquote,
             Underline,
         ],
         content: '',
@@ -118,12 +132,16 @@ export const Editor = () => {
                 class: 'min-heigth: 50rem',
             },
         },
+        onUpdate({ editor }) {
+            const data = editor?.getJSON();
+            setValue(name, data);
+        },
     });
 
     return (
         <Box border={'2px'} rounded={'md'} minH={'40'}>
-            <EditMenu editor={editor} />
-            <EditorContent editor={editor} translate={'no'} />
+            {isEditable && <EditMenu editor={editor} />}
+            <EditorContent editor={editor} spellCheck={false} {...register} />
         </Box>
     );
 };

@@ -20,18 +20,23 @@ import {
     PopoverTrigger,
     PopoverAnchor,
     Flex,
+    Badge,
 } from '@chakra-ui/react';
-import { Editor } from 'component/editor';
+import { TipTapEditor } from 'component/editor';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useForm, UseFormRegister } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CategoryResponse } from '../category/page';
 
-function SelectionCategory() {
+function SelectionCategory({ register }: any) {
     const { data, isError, isLoading } = useQuery('category', GetCategory);
     return (
-        <Select maxW={'container.sm'} textTransform={'capitalize'}>
+        <Select
+            maxW={'container.sm'}
+            textTransform={'capitalize'}
+            {...register}
+        >
             {data?.map((category: CategoryResponse) => (
                 <option key={category.id}>{category.name}</option>
             ))}
@@ -50,6 +55,7 @@ function Tags(register: any) {
     };
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setTagValue(event.target.value);
+        onOpen();
     };
 
     return (
@@ -57,9 +63,8 @@ function Tags(register: any) {
             <PopoverAnchor>
                 <PopoverTrigger>
                     <Input
-                        value={tag}
                         onChange={handleChange}
-                        // {...register('tag')}
+                        {...register}
                         placeholder={'Add  tags..'}
                     />
                 </PopoverTrigger>
@@ -80,8 +85,9 @@ function Tags(register: any) {
     );
 }
 export default function Lessons() {
-    const { register, setValue, control } = useForm();
+    const { register, setValue, handleSubmit, getValues } = useForm();
     const [title, setTitleValue] = useState<string>('');
+    const [isEditorEditable, setEditorEditable] = useState(true);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
     useEffect(() => {
@@ -96,6 +102,16 @@ export default function Lessons() {
         setValue('title', e.target.value);
     };
 
+    const handlePreview = () => {
+        setEditorEditable(false);
+    };
+
+    const handleEdit = () => {
+        setEditorEditable(true);
+    };
+    const onSubmit = (data: any) => {
+        console.log(data);
+    };
     return (
         <Center display={'flex'} flexDirection={'column'} mx={'16'}>
             <Container>
@@ -104,50 +120,77 @@ export default function Lessons() {
                         Create Lessons
                     </Heading>
                     <HStack>
-                        <Button variant={'ghost'} fontWeight={'bold'}>
+                        <Button
+                            variant={'ghost'}
+                            fontWeight={'bold'}
+                            onClick={handleEdit}
+                        >
                             Edit
                         </Button>
-                        <Button variant={'ghost'}>Preview</Button>
+                        <Button variant={'ghost'} onClick={handlePreview}>
+                            Preview
+                        </Button>
                     </HStack>
                 </Flex>
             </Container>
             <Container as={Card} p={'5'} bgColor={'white'}>
-                <Stack spacing={'10'}>
-                    <FormControl>
-                        <FormLabel>Select Lesson Category</FormLabel>
-                        <SelectionCategory />
-                    </FormControl>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Stack spacing={'10'}>
+                        {isEditorEditable ? (
+                            <>
+                                <FormControl>
+                                    <FormLabel>
+                                        Select Lesson Category
+                                    </FormLabel>
+                                    <SelectionCategory
+                                        register={register('subject')}
+                                    />
+                                </FormControl>
 
-                    <FormControl>
-                        <Textarea
-                            ref={(el) => {
-                                textareaRef.current = el;
-                                register('title');
-                            }}
-                            onChange={handleChange}
-                            value={title}
-                            whiteSpace={'pre-wrap'}
-                            fontSize={'3xl'}
-                            _placeholder={{ color: 'black' }}
-                            variant={'unstyled'}
-                            placeholder="New Post Title here..."
-                            minH={'24px'}
-                            resize={'none'}
-                        />
-                    </FormControl>
+                                <FormControl>
+                                    <Textarea
+                                        ref={(el) => {
+                                            textareaRef.current = el;
+                                            register('title');
+                                        }}
+                                        onChange={handleChange}
+                                        value={title}
+                                        whiteSpace={'pre-wrap'}
+                                        fontSize={'3xl'}
+                                        _placeholder={{ color: 'black' }}
+                                        variant={'unstyled'}
+                                        placeholder="New Post Title here..."
+                                        minH={'24px'}
+                                        resize={'none'}
+                                    />
+                                </FormControl>
 
-                    <FormControl>
-                        <Tags register={register} />
-                    </FormControl>
+                                {/* <FormControl>
+                                    <Tags register={register('tag')} />
+                                </FormControl> */}
 
-                    <FormControl>
-                        <Editor />
-                    </FormControl>
-                    <HStack>
-                        <Button variant={'base'}>Publish</Button>
-                        <Button variant={'ghost'}>Save draft</Button>
-                    </HStack>
-                </Stack>
+                                <FormControl>
+                                    <TipTapEditor
+                                        register={register('content')}
+                                        setValue={setValue}
+                                        name={'content'}
+                                        isEditable={isEditorEditable}
+                                    />
+                                </FormControl>
+                            </>
+                        ) : (
+                            <Badge variant={'solid'} width={'full'}>
+                                {getValues('subject')}
+                            </Badge>
+                        )}
+                        <HStack>
+                            <Button variant={'base'}>Publish</Button>
+                            <Button variant={'ghost'} type={'submit'}>
+                                Save draft
+                            </Button>
+                        </HStack>
+                    </Stack>
+                </form>
             </Container>
         </Center>
     );

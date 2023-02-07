@@ -55,6 +55,9 @@ const styles: Styles = {
                     background: 'none',
                     fontSize: '0.8rem',
                 },
+                '&:focus': {
+                    outline: 'none',
+                },
 
                 '.hljs-comment, .hljs-quote': {
                     color: '#616161',
