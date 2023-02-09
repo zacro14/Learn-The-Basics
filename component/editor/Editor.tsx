@@ -109,7 +109,7 @@ type EditorProps = {
 };
 
 export const TipTapEditor = ({
-    isEditable = false,
+    isEditable = true,
     register,
     setValue,
     name,
@@ -126,7 +126,7 @@ export const TipTapEditor = ({
             Underline,
         ],
         content: '',
-        editable: true,
+        editable: isEditable,
         editorProps: {
             attributes: {
                 class: 'min-heigth: 50rem',
@@ -139,7 +139,7 @@ export const TipTapEditor = ({
     });
 
     return (
-        <Box border={'2px'} rounded={'md'} minH={'40'}>
+        <Box rounded={'md'} minH={'40'}>
             {isEditable && <EditMenu editor={editor} />}
             <EditorContent editor={editor} spellCheck={false} {...register} />
         </Box>

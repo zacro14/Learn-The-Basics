@@ -21,6 +21,7 @@ import {
     PopoverAnchor,
     Flex,
     Badge,
+    Box,
 } from '@chakra-ui/react';
 import { TipTapEditor } from 'component/editor';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -114,7 +115,10 @@ export default function Lessons() {
     };
     return (
         <Center display={'flex'} flexDirection={'column'} mx={'16'}>
-            <Container>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                style={{ minHeight: '100vh' }}
+            >
                 <Flex justifyContent={'space-between'} py={'5'} width={'full'}>
                     <Heading my={'5'} fontSize={'xl'}>
                         Create Lessons
@@ -132,9 +136,16 @@ export default function Lessons() {
                         </Button>
                     </HStack>
                 </Flex>
-            </Container>
-            <Container as={Card} p={'5'} bgColor={'white'}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+
+                <Container
+                    sx={{
+                        height: 'calc(100vh - 250px)',
+                    }}
+                    as={Card}
+                    p={'5'}
+                    bgColor={'white'}
+                    width={'full'}
+                >
                     <Stack spacing={'10'}>
                         {isEditorEditable ? (
                             <>
@@ -179,19 +190,34 @@ export default function Lessons() {
                                 </FormControl>
                             </>
                         ) : (
-                            <Badge variant={'solid'} width={'full'}>
-                                {getValues('subject')}
-                            </Badge>
+                            <Box width={'container.lg'}>
+                                <Box>
+                                    <Badge variant={'solid'}>
+                                        {getValues('subject')}
+                                    </Badge>
+                                </Box>
+                                <FormControl>
+                                    <Heading>{getValues('title')}</Heading>
+                                </FormControl>
+                                <TipTapEditor
+                                    register={register('content')}
+                                    setValue={setValue}
+                                    name={'content'}
+                                    isEditable={isEditorEditable}
+                                />
+                            </Box>
                         )}
-                        <HStack>
-                            <Button variant={'base'}>Publish</Button>
-                            <Button variant={'ghost'} type={'submit'}>
-                                Save draft
-                            </Button>
-                        </HStack>
                     </Stack>
-                </form>
-            </Container>
+                </Container>
+                <Box p={'5'}>
+                    <HStack>
+                        <Button variant={'base'}>Publish</Button>
+                        <Button variant={'ghost'} type={'submit'}>
+                            Save draft
+                        </Button>
+                    </HStack>
+                </Box>
+            </form>
         </Center>
     );
 }
