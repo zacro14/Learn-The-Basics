@@ -182,6 +182,7 @@ export default function Lessons() {
 
                                 <FormControl>
                                     <TipTapEditor
+                                        getValues={getValues('content')}
                                         register={register('content')}
                                         setValue={setValue}
                                         name={'content'}
@@ -196,10 +197,11 @@ export default function Lessons() {
                                         {getValues('subject')}
                                     </Badge>
                                 </Box>
-                                <FormControl>
-                                    <Heading>{getValues('title')}</Heading>
-                                </FormControl>
+
+                                <Heading>{getValues('title')}</Heading>
+
                                 <TipTapEditor
+                                    getValues={getValues('content')}
                                     register={register('content')}
                                     setValue={setValue}
                                     name={'content'}

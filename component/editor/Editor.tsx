@@ -106,6 +106,7 @@ type EditorProps = {
     name: string;
     setValue: (name: string, value: any) => void;
     register: any;
+    getValues: any;
 };
 
 export const TipTapEditor = ({
@@ -113,6 +114,7 @@ export const TipTapEditor = ({
     register,
     setValue,
     name,
+    getValues,
 }: EditorProps) => {
     const editor = useEditor({
         extensions: [
@@ -125,7 +127,7 @@ export const TipTapEditor = ({
             }),
             Underline,
         ],
-        content: '',
+        content: getValues ? getValues : '',
         editable: isEditable,
         editorProps: {
             attributes: {
