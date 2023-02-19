@@ -56,8 +56,6 @@ export default function Login() {
             }
         );
 
-        console.log('status', signInStatus);
-
         if (!signInStatus?.ok) {
             return setSigninError(signInStatus?.error);
         }

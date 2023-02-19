@@ -22,11 +22,14 @@ import {
     Flex,
     Badge,
     Box,
+    useToast,
 } from '@chakra-ui/react';
+import { AxiosError } from 'axios';
 import { TipTapEditor } from 'component/editor';
+import { ApiClientPrivate } from 'lib/axios/Api';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { GetCategory } from 'service/lessoncategory/fetchCategory';
 import { CategoryResponse } from '../category/page';
 
@@ -90,6 +93,7 @@ export default function Lessons() {
     const [title, setTitleValue] = useState<string>('');
     const [isEditorEditable, setEditorEditable] = useState(true);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+    const toast = useToast();
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -110,8 +114,32 @@ export default function Lessons() {
     const handleEdit = () => {
         setEditorEditable(true);
     };
+
+    const mutation = useMutation(
+        (lesson: any) => {
+            return ApiClientPrivate.post('/lesson', lesson);
+        },
+        {
+            onSuccess() {
+                toast({
+                    title: `Success`,
+                    description: 'Sucessfully added a new lesson',
+                    status: 'success',
+                    isClosable: true,
+                });
+            },
+            onError: (error: AxiosError) => {
+                toast({
+                    title: `Error `,
+                    description: `${error.response?.statusText}`,
+                    status: 'error',
+                    isClosable: true,
+                });
+            },
+        }
+    );
     const onSubmit = (data: any) => {
-        console.log(data);
+        mutation.mutate(data);
     };
     return (
         <Center display={'flex'} flexDirection={'column'} mx={'16'}>
@@ -214,7 +242,11 @@ export default function Lessons() {
                 <Box p={'5'}>
                     <HStack>
                         <Button variant={'base'}>Publish</Button>
-                        <Button variant={'ghost'} type={'submit'}>
+                        <Button
+                            variant={'ghost'}
+                            type={'submit'}
+                            isLoading={mutation.isLoading}
+                        >
                             Save draft
                         </Button>
                     </HStack>
