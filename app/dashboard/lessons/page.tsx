@@ -23,7 +23,9 @@ import {
     Badge,
     Box,
     useToast,
+    FormErrorMessage,
 } from '@chakra-ui/react';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { AxiosError } from 'axios';
 import { TipTapEditor } from 'component/editor';
 import { ApiClientPrivate } from 'lib/axios/Api';
@@ -31,7 +33,9 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from 'react-query';
 import { GetCategory } from 'service/lessoncategory/fetchCategory';
+import { lessonschema } from 'utils/validation_schema';
 import { CategoryResponse } from '../category/page';
+import * as yup from 'yup';
 
 function SelectionCategory({ register }: any) {
     const { data, isError, isLoading } = useQuery('category', GetCategory);
@@ -88,8 +92,19 @@ function Tags(register: any) {
         </Popover>
     );
 }
+
+type FormData = yup.InferType<typeof lessonschema>;
+
 export default function Lessons() {
-    const { register, setValue, handleSubmit, getValues } = useForm();
+    const {
+        register,
+        setValue,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+    } = useForm<FormData>({
+        resolver: yupResolver(lessonschema),
+    });
     const [title, setTitleValue] = useState<string>('');
     const [isEditorEditable, setEditorEditable] = useState(true);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -116,7 +131,7 @@ export default function Lessons() {
     };
 
     const mutation = useMutation(
-        (lesson: any) => {
+        (lesson: FormData) => {
             return ApiClientPrivate.post('/lesson', lesson);
         },
         {
@@ -138,7 +153,8 @@ export default function Lessons() {
             },
         }
     );
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: FormData) => {
+        console.log('--->', data);
         mutation.mutate(data);
     };
     return (
@@ -177,16 +193,27 @@ export default function Lessons() {
                     <Stack spacing={'10'}>
                         {isEditorEditable ? (
                             <>
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={
+                                        errors.subject?.message ? true : false
+                                    }
+                                >
                                     <FormLabel>
                                         Select Lesson Category
                                     </FormLabel>
                                     <SelectionCategory
-                                        register={register('subject')}
+                                        {...register('subject')}
                                     />
+                                    <FormErrorMessage>
+                                        {errors.subject?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
 
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={
+                                        errors.title?.message ? true : false
+                                    }
+                                >
                                     <Textarea
                                         ref={(el) => {
                                             textareaRef.current = el;
@@ -202,13 +229,20 @@ export default function Lessons() {
                                         minH={'24px'}
                                         resize={'none'}
                                     />
+                                    <FormErrorMessage>
+                                        {errors.title?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
 
                                 {/* <FormControl>
                                     <Tags register={register('tag')} />
                                 </FormControl> */}
 
-                                <FormControl>
+                                <FormControl
+                                    isInvalid={
+                                        errors.content?.message ? true : false
+                                    }
+                                >
                                     <TipTapEditor
                                         getValues={getValues('content')}
                                         register={register('content')}
@@ -216,6 +250,9 @@ export default function Lessons() {
                                         name={'content'}
                                         isEditable={isEditorEditable}
                                     />
+                                    <FormErrorMessage>
+                                        {errors.content?.message}
+                                    </FormErrorMessage>
                                 </FormControl>
                             </>
                         ) : (

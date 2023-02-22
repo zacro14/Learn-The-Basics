@@ -22,7 +22,6 @@ import {
     FaCode,
     FaUnderline,
 } from 'react-icons/fa';
-import { useEffect, useRef } from 'react';
 
 type EditorMenu = {
     editor: TiptapEditor | null;
@@ -104,7 +103,7 @@ function EditMenu({ editor }: EditorMenu) {
 type EditorProps = {
     isEditable?: boolean;
     name: string;
-    setValue: (name: string, value: any) => void;
+    setValue: (fieldName: any, value: any) => void;
     register: any;
     getValues: any;
 };
