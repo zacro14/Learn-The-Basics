@@ -4,4 +4,5 @@ export const lessonschema = yup.object({
     title: yup.string().required('required'),
     subject: yup.string().required('required'),
     content: yup.mixed().required(),
+    isDraft: yup.boolean().default(true),
 });

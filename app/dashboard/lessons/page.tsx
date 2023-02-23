@@ -46,7 +46,12 @@ function SelectionCategory({ register }: any) {
             {...register}
         >
             {data?.map((category: CategoryResponse) => (
-                <option key={category.id}>{category.name}</option>
+                <option
+                    style={{ textTransform: 'capitalize' }}
+                    key={category.id}
+                >
+                    {category.name}
+                </option>
             ))}
         </Select>
     );
@@ -107,7 +112,9 @@ export default function Lessons() {
     });
     const [title, setTitleValue] = useState<string>('');
     const [isEditorEditable, setEditorEditable] = useState(true);
+    const [isDraft, setIsDraft] = useState<boolean>(true);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
     const toast = useToast();
 
     useEffect(() => {
@@ -154,7 +161,7 @@ export default function Lessons() {
         }
     );
     const onSubmit = (data: FormData) => {
-        console.log('--->', data);
+        data.isDraft = isDraft;
         mutation.mutate(data);
     };
     return (
@@ -202,7 +209,7 @@ export default function Lessons() {
                                         Select Lesson Category
                                     </FormLabel>
                                     <SelectionCategory
-                                        {...register('subject')}
+                                        register={register('subject')}
                                     />
                                     <FormErrorMessage>
                                         {errors.subject?.message}
@@ -278,14 +285,26 @@ export default function Lessons() {
                 </Container>
                 <Box p={'5'}>
                     <HStack>
-                        <Button variant={'base'}>Publish</Button>
-                        <Button
-                            variant={'ghost'}
-                            type={'submit'}
-                            isLoading={mutation.isLoading}
-                        >
-                            Save draft
-                        </Button>
+                        {mutation.isLoading ? (
+                            <Button>Submitting ...</Button>
+                        ) : (
+                            <>
+                                <Button
+                                    variant={'base'}
+                                    type={'submit'}
+                                    onClick={() => setIsDraft(false)}
+                                >
+                                    Publish
+                                </Button>
+                                <Button
+                                    variant={'ghost'}
+                                    type={'submit'}
+                                    onClick={() => setIsDraft(true)}
+                                >
+                                    Save draft
+                                </Button>
+                            </>
+                        )}
                     </HStack>
                 </Box>
             </form>
